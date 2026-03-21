@@ -176,23 +176,28 @@ export default function Page() {
               </div>
             </section>
 
-            <section className="paperSection extraSection">
-              <h2 className="sectionTitle small">{INVITE.extraTitle}</h2>
-              <p className="bodyText">{INVITE.extraText}</p>
-              <div className="contactCard">
-                <div>
-                  <div className="contactName">{INVITE.organizerName}</div>
-                  <div className="contactPhone">{INVITE.organizerPhoneText}</div>
-                </div>
-                <a className="contactButton" href={`tel:${INVITE.organizerPhoneTel}`}>
-                  Позвонить
-                </a>
+            <section className="paperSection timingSection timingSectionDesktop">
+              <h2 className="sectionTitle small">{INVITE.scheduleTitle}</h2>
+              <div className="timeline">
+                {INVITE.schedule.map((item) => (
+                  <article className="timelineItem" key={item.time + item.title}>
+                    <div className="timelineRail">
+                      <span className="timelineLine" aria-hidden="true" />
+                      <HeartMarker />
+                    </div>
+                    <div className="timelineContent">
+                      <div className="timelineTime">{item.time}</div>
+                      <div className="timelineTitle">{item.title}</div>
+                      <p className="timelineText">{item.description}</p>
+                    </div>
+                  </article>
+                ))}
               </div>
             </section>
           </article>
 
           <aside className="paperColumn secondaryColumn">
-            <section className="paperSection timingSection">
+            <section className="paperSection timingSection timingSectionMobile">
               <h2 className="sectionTitle small">{INVITE.scheduleTitle}</h2>
               <div className="timeline">
                 {INVITE.schedule.map((item) => (

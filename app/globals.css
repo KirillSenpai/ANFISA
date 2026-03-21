@@ -264,6 +264,10 @@ body{
   padding-top:0;
 }
 
+.timingSectionDesktop{
+  display:none;
+}
+
 .timeline{
   display:grid;
   gap:28px;
@@ -522,9 +526,25 @@ body{
     flex-direction:column;
     align-items:stretch;
   }
+
+  .timingSectionDesktop{
+    display:none;
+  }
+
+  .timingSectionMobile{
+    display:block;
+  }
 }
 
 @media (min-width: 901px){
+  .timingSectionDesktop{
+    display:block;
+  }
+
+  .timingSectionMobile{
+    display:none;
+  }
+
   .editorialGrid{
     grid-template-columns:minmax(0, 560px) minmax(320px, 400px);
     gap:22px;
