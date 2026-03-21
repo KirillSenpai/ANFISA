@@ -167,6 +167,13 @@ body{
   border-top:none;
 }
 
+.tileCard{
+  background:rgba(248,244,239,.92);
+  border:1px solid rgba(213,194,177,.72);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+}
+
 .sectionTitle{
   margin:0 0 22px;
   text-align:center;
@@ -533,6 +540,59 @@ body{
   .contactCard{
     flex-direction:column;
     align-items:stretch;
+  }
+}
+
+@media (min-width: 901px){
+  .paperColumn{
+    background:transparent;
+    border:none;
+    box-shadow:none;
+    overflow:visible;
+    padding:0;
+    display:grid;
+    gap:22px;
+    align-content:start;
+  }
+
+  .photoCard,
+  .primaryColumn .paperSection,
+  .secondaryColumn .paperSection,
+  .farewell,
+  .rsvpFloating{
+    background:rgba(248,244,239,.92);
+    border:1px solid rgba(213,194,177,.72);
+    border-radius:24px;
+    box-shadow:var(--shadow);
+  }
+
+  .photoCard{
+    padding:24px;
+  }
+
+  .primaryColumn .paperSection,
+  .secondaryColumn .paperSection{
+    padding:30px 24px;
+    border-top:none;
+  }
+
+  .farewell{
+    margin-top:0;
+    padding:24px 18px;
+  }
+
+  .rsvpFloating{
+    position:static;
+    bottom:auto;
+    margin-top:0;
+  }
+
+  .primaryColumn{
+    gap:22px;
+  }
+
+  .secondaryColumn{
+    gap:22px;
   }
 }
 
