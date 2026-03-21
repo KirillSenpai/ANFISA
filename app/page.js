@@ -135,7 +135,6 @@ export default function Page() {
         <section className="editorialGrid">
           <article className="paperColumn primaryColumn">
             <div className="photoCard">
-              <div className="photoCorners" aria-hidden="true" />
               <div className="heroPhoto">
                 <Image
                   src={INVITE.photoMain}
@@ -175,22 +174,10 @@ export default function Page() {
                           : "calendarCell"
                     }
                   >
-                    {cell.v}
+                    {cell.active && <span className="calendarHeart" aria-hidden="true">♡</span>}
+                    <span className="calendarNumber">{cell.v}</span>
                   </div>
                 ))}
-              </div>
-            </section>
-
-            <section className="photoStrip">
-              <div className="secondaryPhoto">
-                <Image
-                  src={INVITE.photoSecondary || INVITE.photoMain}
-                  alt={INVITE.photoAlt}
-                  width={1019}
-                  height={768}
-                  sizes="(max-width: 900px) 100vw, 560px"
-                  className="heroImage heroImageNatural"
-                />
               </div>
             </section>
           </article>
@@ -217,22 +204,13 @@ export default function Page() {
 
             <section className="paperSection locationSection">
               <h2 className="sectionTitle small">{INVITE.locationTitle}</h2>
-              <div className="locationGallery">
-                <div className="locationShot smallShot">
+              <div className="locationGallery single">
+                <div className="locationShot locationShotSingle">
                   <Image
-                    src={INVITE.photoMain}
-                    alt={INVITE.photoAlt}
+                    src={INVITE.locationPhoto}
+                    alt={INVITE.locationPhotoAlt}
                     fill
-                    sizes="(max-width: 900px) 50vw, 200px"
-                    className="heroImage"
-                  />
-                </div>
-                <div className="locationShot tallShot">
-                  <Image
-                    src={INVITE.photoSecondary || INVITE.photoMain}
-                    alt={INVITE.photoAlt}
-                    fill
-                    sizes="(max-width: 900px) 50vw, 300px"
+                    sizes="(max-width: 900px) 100vw, 420px"
                     className="heroImage"
                   />
                 </div>
