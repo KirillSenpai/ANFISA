@@ -552,18 +552,19 @@ body{
 
   .primaryColumn,
   .secondaryColumn{
-    display:contents;
+    background:transparent;
+    border:none;
+    box-shadow:none;
+    overflow:visible;
+    padding:0;
+    display:grid;
+    gap:22px;
+    align-content:start;
   }
 
   .photoCard,
-  .introSection,
-  .calendarSection,
-  .timingSection,
-  .locationSection,
-  .dressSection,
-  .wishesSection,
-  .extraSection,
-  .formSection,
+  .primaryColumn .paperSection,
+  .secondaryColumn .paperSection,
   .farewell,
   .rsvpFloating{
     background:rgba(248,244,239,.92);
@@ -576,14 +577,8 @@ body{
     padding:24px;
   }
 
-  .introSection,
-  .calendarSection,
-  .timingSection,
-  .locationSection,
-  .dressSection,
-  .wishesSection,
-  .extraSection,
-  .formSection{
+  .primaryColumn .paperSection,
+  .secondaryColumn .paperSection{
     padding:30px 24px;
     border-top:none;
   }
@@ -597,23 +592,6 @@ body{
     position:static;
     bottom:auto;
     margin-top:0;
-  }
-
-  .photoCard,
-  .introSection,
-  .calendarSection,
-  .wishesSection,
-  .extraSection{
-    grid-column:1;
-  }
-
-  .timingSection,
-  .locationSection,
-  .dressSection,
-  .formSection,
-  .farewell,
-  .rsvpFloating{
-    grid-column:2;
   }
 }
 

@@ -175,6 +175,25 @@ export default function Page() {
                 ))}
               </div>
             </section>
+
+            <section className="paperSection wishesSection">
+              <h2 className="sectionTitle small">{INVITE.wishesTitle}</h2>
+              <p className="bodyText">{INVITE.wishesText}</p>
+            </section>
+
+            <section className="paperSection extraSection">
+              <h2 className="sectionTitle small">{INVITE.extraTitle}</h2>
+              <p className="bodyText">{INVITE.extraText}</p>
+              <div className="contactCard">
+                <div>
+                  <div className="contactName">{INVITE.organizerName}</div>
+                  <div className="contactPhone">{INVITE.organizerPhoneText}</div>
+                </div>
+                <a className="contactButton" href={`tel:${INVITE.organizerPhoneTel}`}>
+                  Позвонить
+                </a>
+              </div>
+            </section>
           </article>
 
           <aside className="paperColumn secondaryColumn">
@@ -242,25 +261,6 @@ export default function Page() {
                 {INVITE.dressColors.map((color) => (
                   <span key={color} className="swatch" style={{ backgroundColor: color }} />
                 ))}
-              </div>
-            </section>
-
-            <section className="paperSection wishesSection">
-              <h2 className="sectionTitle small">{INVITE.wishesTitle}</h2>
-              <p className="bodyText">{INVITE.wishesText}</p>
-            </section>
-
-            <section className="paperSection extraSection">
-              <h2 className="sectionTitle small">{INVITE.extraTitle}</h2>
-              <p className="bodyText">{INVITE.extraText}</p>
-              <div className="contactCard">
-                <div>
-                  <div className="contactName">{INVITE.organizerName}</div>
-                  <div className="contactPhone">{INVITE.organizerPhoneText}</div>
-                </div>
-                <a className="contactButton" href={`tel:${INVITE.organizerPhoneTel}`}>
-                  Позвонить
-                </a>
               </div>
             </section>
 
