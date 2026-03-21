@@ -157,7 +157,7 @@ export default function Page() {
       <div className="shell">
         <header className="topbar">
           <div className="brand">
-            taplink <span className="brandSub">(сайт) — электронное приглашение</span>
+             <span className="brandSub">(сайт) — электронное приглашение</span>
           </div>
           <a className="topbtn" href="#rsvp">
             подтвердить присутствие
