@@ -24,16 +24,28 @@ export default function RootLayout({ children }) {
               if (window.location.hash) {
                 history.replaceState(null, "", window.location.pathname + window.location.search);
               }
+              document.documentElement.scrollTop = 0;
+              document.body.scrollTop = 0;
               window.scrollTo(0, 0);
+            }
+
+            function scheduleReset() {
+              resetScroll();
+              requestAnimationFrame(resetScroll);
+              setTimeout(resetScroll, 0);
+              setTimeout(resetScroll, 120);
+              setTimeout(resetScroll, 400);
             }
 
             if ("scrollRestoration" in history) {
               history.scrollRestoration = "manual";
             }
 
-            window.addEventListener("load", resetScroll);
-            window.addEventListener("pageshow", resetScroll);
-            resetScroll();
+            document.addEventListener("DOMContentLoaded", scheduleReset);
+            window.addEventListener("load", scheduleReset);
+            window.addEventListener("pageshow", scheduleReset);
+            window.addEventListener("focus", scheduleReset);
+            scheduleReset();
           })();
         `}</Script>
         {children}
