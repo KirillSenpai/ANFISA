@@ -139,10 +139,10 @@ export default function Page() {
                 <Image
                   src={INVITE.photoMain}
                   alt={INVITE.photoAlt}
-                  width={1019}
-                  height={768}
+                  width={768}
+                  height={1019}
                   sizes="(max-width: 900px) 100vw, 560px"
-                  className="heroImage heroImageNatural"
+                  className="heroImage heroImagePortrait"
                   priority
                 />
               </div>
