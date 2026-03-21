@@ -544,20 +544,26 @@ body{
 }
 
 @media (min-width: 901px){
-  .paperColumn{
-    background:transparent;
-    border:none;
-    box-shadow:none;
-    overflow:visible;
-    padding:0;
-    display:grid;
+  .editorialGrid{
+    grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
     gap:22px;
-    align-content:start;
+    align-items:start;
+  }
+
+  .primaryColumn,
+  .secondaryColumn{
+    display:contents;
   }
 
   .photoCard,
-  .primaryColumn .paperSection,
-  .secondaryColumn .paperSection,
+  .introSection,
+  .calendarSection,
+  .timingSection,
+  .locationSection,
+  .dressSection,
+  .wishesSection,
+  .extraSection,
+  .formSection,
   .farewell,
   .rsvpFloating{
     background:rgba(248,244,239,.92);
@@ -570,8 +576,14 @@ body{
     padding:24px;
   }
 
-  .primaryColumn .paperSection,
-  .secondaryColumn .paperSection{
+  .introSection,
+  .calendarSection,
+  .timingSection,
+  .locationSection,
+  .dressSection,
+  .wishesSection,
+  .extraSection,
+  .formSection{
     padding:30px 24px;
     border-top:none;
   }
@@ -587,12 +599,21 @@ body{
     margin-top:0;
   }
 
-  .primaryColumn{
-    gap:22px;
+  .photoCard,
+  .introSection,
+  .calendarSection,
+  .wishesSection,
+  .extraSection{
+    grid-column:1;
   }
 
-  .secondaryColumn{
-    gap:22px;
+  .timingSection,
+  .locationSection,
+  .dressSection,
+  .formSection,
+  .farewell,
+  .rsvpFloating{
+    grid-column:2;
   }
 }
 
