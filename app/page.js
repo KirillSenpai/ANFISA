@@ -176,11 +176,6 @@ export default function Page() {
               </div>
             </section>
 
-            <section className="paperSection wishesSection">
-              <h2 className="sectionTitle small">{INVITE.wishesTitle}</h2>
-              <p className="bodyText">{INVITE.wishesText}</p>
-            </section>
-
             <section className="paperSection extraSection">
               <h2 className="sectionTitle small">{INVITE.extraTitle}</h2>
               <p className="bodyText">{INVITE.extraText}</p>
@@ -217,6 +212,15 @@ export default function Page() {
             </section>
 
             <section className="paperSection locationSection">
+              <h2 className="sectionTitle small">{INVITE.registrationTitle}</h2>
+              <div className="locationCaption">{INVITE.registrationVenue}</div>
+              <div className="locationAddress">{INVITE.registrationAddress}</div>
+              <a className="mapButton" href={INVITE.registrationMapLink} target="_blank" rel="noreferrer">
+                Открыть место регистрации
+              </a>
+            </section>
+
+            <section className="paperSection locationSection">
               <h2 className="sectionTitle small">{INVITE.locationTitle}</h2>
               <div className="locationGallery">
                 <div className="locationShot locationShotPrimary">
@@ -245,15 +249,6 @@ export default function Page() {
               </a>
             </section>
 
-            <section className="paperSection locationSection">
-              <h2 className="sectionTitle small">{INVITE.registrationTitle}</h2>
-              <div className="locationCaption">{INVITE.registrationVenue}</div>
-              <div className="locationAddress">{INVITE.registrationAddress}</div>
-              <a className="mapButton" href={INVITE.registrationMapLink} target="_blank" rel="noreferrer">
-                Открыть место регистрации
-              </a>
-            </section>
-
             <section className="paperSection dressSection">
               <h2 className="sectionTitle small">{INVITE.dressTitle}</h2>
               <p className="bodyText">{INVITE.dressText}</p>
@@ -261,6 +256,20 @@ export default function Page() {
                 {INVITE.dressColors.map((color) => (
                   <span key={color} className="swatch" style={{ backgroundColor: color }} />
                 ))}
+              </div>
+            </section>
+
+            <section className="paperSection extraSection">
+              <h2 className="sectionTitle small">{INVITE.extraTitle}</h2>
+              <p className="bodyText">{INVITE.extraText}</p>
+              <div className="contactCard">
+                <div>
+                  <div className="contactName">{INVITE.organizerName}</div>
+                  <div className="contactPhone">{INVITE.organizerPhoneText}</div>
+                </div>
+                <a className="contactButton" href={`tel:${INVITE.organizerPhoneTel}`}>
+                  Позвонить
+                </a>
               </div>
             </section>
 
@@ -306,9 +315,6 @@ export default function Page() {
             </section>
 
             <div className="farewell">{INVITE.footerFarewell}</div>
-            <a className="rsvpFloating" href="#rsvp" onClick={scrollToRsvp}>
-              RSVP
-            </a>
           </aside>
         </section>
       </div>

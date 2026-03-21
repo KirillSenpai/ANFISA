@@ -362,8 +362,7 @@ body{
 
 .mapButton,
 .contactButton,
-.submitButton,
-.rsvpFloating{
+.submitButton{
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -385,8 +384,7 @@ body{
 
 .mapButton:hover,
 .contactButton:hover,
-.submitButton:hover,
-.rsvpFloating:hover{
+.submitButton:hover{
   transform:translateY(-1px);
 }
 
@@ -500,22 +498,6 @@ body{
   color:#c08e80;
 }
 
-.rsvpFloating{
-  position:sticky;
-  bottom:18px;
-  margin-top:24px;
-  width:100%;
-  padding:15px 18px;
-  background:rgba(248,244,239,.88);
-  border:1px solid rgba(213,194,177,.82);
-  color:var(--accent-deep);
-  font-family: Arial, Helvetica, sans-serif;
-  text-transform:uppercase;
-  letter-spacing:.2em;
-  font-size:13px;
-  backdrop-filter:blur(6px);
-}
-
 @media (max-width: 900px){
   .frameShell{
     padding:28px 12px 48px;
@@ -565,8 +547,7 @@ body{
   .photoCard,
   .primaryColumn .paperSection,
   .secondaryColumn .paperSection,
-  .farewell,
-  .rsvpFloating{
+  .farewell{
     background:rgba(248,244,239,.92);
     border:1px solid rgba(213,194,177,.72);
     border-radius:24px;
@@ -586,12 +567,6 @@ body{
   .farewell{
     margin-top:0;
     padding:24px 18px;
-  }
-
-  .rsvpFloating{
-    position:static;
-    bottom:auto;
-    margin-top:0;
   }
 }
 
