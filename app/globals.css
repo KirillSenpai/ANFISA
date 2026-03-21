@@ -11,7 +11,10 @@
 }
 
 *{box-sizing:border-box}
-html,body{height:100%}
+html,body{
+  height:100%;
+  overflow-x:hidden;
+}
 body{
   margin:0;
   font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
@@ -19,9 +22,10 @@ body{
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
 }
 
-.wrap{min-height:100vh; position:relative; overflow-x:hidden;}
+.wrap{min-height:100vh; position:relative;}
 .ambient{
   position:absolute; inset:-200px;
   background:
