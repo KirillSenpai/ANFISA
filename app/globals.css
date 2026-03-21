@@ -21,7 +21,7 @@ body{
   -moz-osx-font-smoothing: grayscale;
 }
 
-.wrap{min-height:100vh; position:relative; overflow:hidden;}
+.wrap{min-height:100vh; position:relative; overflow-x:hidden;}
 .ambient{
   position:absolute; inset:-200px;
   background:
