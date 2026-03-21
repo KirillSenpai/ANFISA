@@ -62,7 +62,6 @@ body{
     max(64px, env(safe-area-inset-bottom))
     max(12px, env(safe-area-inset-left));
   width:100%;
-  max-width:100%;
 }
 
 .editorialGrid{
@@ -545,9 +544,10 @@ body{
 
 @media (min-width: 901px){
   .editorialGrid{
-    grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns:minmax(0, 560px) minmax(320px, 400px);
     gap:22px;
     align-items:start;
+    justify-content:center;
   }
 
   .primaryColumn,
