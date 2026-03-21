@@ -1,14 +1,15 @@
 import "./globals.css";
 
+import { SITE_METADATA } from "./invite-data";
+
 export const metadata = {
-  title: "Анфиса & Егор — приглашение на свадьбу",
-  description: "15 августа, 16:00 — Челябинск",
-  metadataBase: new URL("https://example.com"),
+  title: SITE_METADATA.title,
+  description: SITE_METADATA.description,
+  metadataBase: new URL(SITE_METADATA.metadataBase),
   openGraph: {
-    title: "Анфиса & Егор — приглашение на свадьбу",
-    description: "15 августа, 16:00 — Челябинск",
+    title: SITE_METADATA.title,
+    description: SITE_METADATA.description,
     type: "website"
-    // images: ["/og.jpg"]
   }
 };
 

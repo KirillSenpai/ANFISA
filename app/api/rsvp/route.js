@@ -1,14 +1,15 @@
+import { INVITE } from "../../invite-data";
+
 export const runtime = "nodejs";
 
 function mustEnv(name) {
-  const v = process.env[name];
-  if (!v) throw new Error(`Missing env: ${name}`);
-  return v;
+  const value = process.env[name];
+  if (!value) throw new Error(`Missing env: ${name}`);
+  return value;
 }
 
-function esc(s) {
-  // Telegram HTML parse_mode
-  return String(s ?? "")
+function esc(value) {
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
@@ -16,8 +17,8 @@ function esc(s) {
 
 export async function POST(req) {
   try {
-    const BOT_TOKEN = mustEnv("TELEGRAM_BOT_TOKEN");
-    const CHAT_ID = mustEnv("TELEGRAM_CHAT_ID");
+    const botToken = mustEnv("TELEGRAM_BOT_TOKEN");
+    const chatId = mustEnv("TELEGRAM_CHAT_ID");
 
     const body = await req.json().catch(() => ({}));
     const name = (body?.name || "").toString().trim();
@@ -25,26 +26,29 @@ export async function POST(req) {
     const guests = (body?.guests || "").toString().trim();
     const note = (body?.note || "").toString().trim();
 
-    if (name.length < 2) return Response.json({ error: "Укажите имя" }, { status: 400 });
-    if (!attend) return Response.json({ error: "Выберите вариант присутствия" }, { status: 400 });
+    if (name.length < 2) {
+      return Response.json({ error: "Укажите имя" }, { status: 400 });
+    }
+
+    if (!attend) {
+      return Response.json({ error: "Выберите вариант присутствия" }, { status: 400 });
+    }
 
     const ts = new Date().toLocaleString("ru-RU", { timeZone: "Asia/Yekaterinburg" });
-
     const msg =
-      `<b>RSVP — Анфиса & Егор</b>\n` +
+      `<b>RSVP — ${esc(INVITE.couple)}</b>\n` +
       `<b>Время:</b> ${esc(ts)}\n` +
       `<b>Имя:</b> ${esc(name)}\n` +
       `<b>Будет:</b> ${esc(attend)}\n` +
       `<b>Гостей:</b> ${esc(guests || "-")}\n` +
       `<b>Комментарий:</b> ${esc(note || "-")}`;
 
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
     const resp = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        chat_id: CHAT_ID,
+        chat_id: chatId,
         text: msg,
         parse_mode: "HTML",
         disable_web_page_preview: true
@@ -57,7 +61,7 @@ export async function POST(req) {
     }
 
     return Response.json({ ok: true });
-  } catch (e) {
-    return Response.json({ error: e?.message || "Server error" }, { status: 500 });
+  } catch (error) {
+    return Response.json({ error: error?.message || "Server error" }, { status: 500 });
   }
 }
