@@ -1,4 +1,5 @@
 import "./globals.css";
+import Script from "next/script";
 
 import { SITE_METADATA } from "./invite-data";
 
@@ -16,7 +17,27 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ru">
-      <body>{children}</body>
+      <body>
+        <Script id="scroll-reset" strategy="beforeInteractive">{`
+          (function () {
+            function resetScroll() {
+              if (window.location.hash) {
+                history.replaceState(null, "", window.location.pathname + window.location.search);
+              }
+              window.scrollTo(0, 0);
+            }
+
+            if ("scrollRestoration" in history) {
+              history.scrollRestoration = "manual";
+            }
+
+            window.addEventListener("load", resetScroll);
+            window.addEventListener("pageshow", resetScroll);
+            resetScroll();
+          })();
+        `}</Script>
+        {children}
+      </body>
     </html>
   );
 }
