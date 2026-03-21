@@ -17,7 +17,7 @@ html,body{
   min-height:100%;
   width:100%;
   max-width:100%;
-  overflow-x:clip;
+  overflow-x:hidden;
 }
 body{
   margin:0;
@@ -56,16 +56,22 @@ body{
   position:relative;
   max-width:1120px;
   margin:0 auto;
-  padding:42px 18px 64px;
+  padding:
+    max(42px, env(safe-area-inset-top))
+    max(12px, env(safe-area-inset-right))
+    max(64px, env(safe-area-inset-bottom))
+    max(12px, env(safe-area-inset-left));
   width:100%;
   max-width:100%;
 }
 
 .heroBar{
   margin:0 auto 22px;
-  width:min(100%, 980px);
+  width:100%;
+  max-width:980px;
   color:var(--accent-deep);
   letter-spacing:.03em;
+  min-width:0;
 }
 
 .heroLabel{
@@ -73,6 +79,8 @@ body{
   line-height:1;
   text-transform:uppercase;
   font-weight:400;
+  max-width:100%;
+  overflow-wrap:anywhere;
 }
 
 .heroSubLabel{
@@ -81,6 +89,8 @@ body{
   text-transform:uppercase;
   letter-spacing:.2em;
   color:var(--ink-soft);
+  max-width:100%;
+  overflow-wrap:anywhere;
 }
 
 .editorialGrid{
@@ -550,15 +560,21 @@ body{
 
 @media (max-width: 560px){
   .frameShell{
-    padding:18px 8px 36px;
+    padding:
+      max(18px, env(safe-area-inset-top))
+      max(10px, env(safe-area-inset-right))
+      max(36px, env(safe-area-inset-bottom))
+      max(10px, env(safe-area-inset-left));
   }
 
   .heroLabel{
-    font-size:22px;
+    font-size:18px;
+    letter-spacing:.01em;
   }
 
   .heroSubLabel{
-    font-size:11px;
+    font-size:10px;
+    letter-spacing:.12em;
   }
 
   .sectionTitle{

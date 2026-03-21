@@ -3,6 +3,12 @@ import Script from "next/script";
 
 import { SITE_METADATA } from "./invite-data";
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover"
+};
+
 export const metadata = {
   title: SITE_METADATA.title,
   description: SITE_METADATA.description,
