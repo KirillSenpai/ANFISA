@@ -1,10 +1,10 @@
 :root{
-  --bg:#bfb7b9;          /* серо-пудровый фон */
-  --paper:#f5e6e9;       /* “лист/постер” */
-  --ink:#5b3c45;         /* текст */
-  --muted:#7a5a63;
-  --line:#cf98a7;        /* обводки */
-  --accent:#d48aa0;      /* розовый блок */
+  --bg:#99afc8;
+  --paper:#eef5fb;
+  --ink:#27445d;
+  --muted:#55708a;
+  --line:#91b7d8;
+  --accent:#6ea7d8;
   --white:#ffffff;
   --shadow: 0 18px 50px rgba(0,0,0,.18);
   --radius: 22px;
@@ -26,8 +26,8 @@ body{
   position:absolute; inset:-200px;
   background:
     radial-gradient(900px 700px at 15% 0%, rgba(255,255,255,.18), transparent 60%),
-    radial-gradient(800px 600px at 85% 15%, rgba(255,210,230,.25), transparent 65%),
-    radial-gradient(700px 600px at 60% 95%, rgba(255,255,255,.12), transparent 60%);
+    radial-gradient(800px 600px at 85% 15%, rgba(185,223,255,.30), transparent 65%),
+    radial-gradient(700px 600px at 60% 95%, rgba(224,244,255,.16), transparent 60%);
   pointer-events:none;
 }
 
@@ -78,9 +78,8 @@ body{
   align-items:start;
 }
 
-/* --- Poster (left) --- */
 .poster{
-  background: rgba(255,255,255,.10);
+  background: rgba(255,255,255,.14);
   border-radius: var(--radius);
   padding: 16px;
   box-shadow: var(--shadow);
@@ -146,9 +145,9 @@ body{
   width: min(480px, 92%);
   aspect-ratio: 1 / 1;
   border-radius: 22px;
-  border: 2px solid rgba(212,138,160,.55);
+  border: 2px solid rgba(110,167,216,.45);
   padding: 16px;
-  background: rgba(212,138,160,.10);
+  background: rgba(110,167,216,.10);
 }
 .heartInner{
   position:relative;
@@ -194,7 +193,7 @@ body{
 
 .dateBlock{
   margin-top: 14px;
-  background: rgba(255,255,255,.14);
+  background: rgba(255,255,255,.18);
   border-radius: 18px;
   padding: 14px;
   color: rgba(255,255,255,.92);
@@ -214,7 +213,7 @@ body{
 
 .calendar{
   margin-top: 12px;
-  background: rgba(0,0,0,.10);
+  background: rgba(22,51,77,.14);
   border: 1px solid rgba(255,255,255,.22);
   border-radius: 16px;
   padding: 10px 10px 12px;
@@ -246,7 +245,7 @@ body{
 }
 .calCell.empty{background: transparent;}
 .calCell.active{
-  background: rgba(212,138,160,.45);
+  background: rgba(110,167,216,.48);
   border: 1px solid rgba(255,255,255,.35);
   font-weight: 800;
 }
@@ -257,7 +256,6 @@ body{
   margin-top: 10px;
 }
 
-/* --- Right column --- */
 .side{
   display:flex;
   flex-direction:column;
@@ -265,14 +263,14 @@ body{
 }
 
 .panel{
-  background: rgba(245,230,233,.88);
-  border: 1px solid rgba(207,152,167,.55);
+  background: rgba(238,245,251,.90);
+  border: 1px solid rgba(145,183,216,.55);
   border-radius: 18px;
   padding: 14px;
   box-shadow: 0 14px 35px rgba(0,0,0,.12);
 }
 .panel.accent{
-  background: rgba(212,138,160,.92);
+  background: rgba(110,167,216,.94);
   border-color: rgba(255,255,255,.25);
   color: rgba(255,255,255,.95);
 }
@@ -303,7 +301,7 @@ body{
   padding: 10px;
   border-radius: 16px;
   background: rgba(255,255,255,.50);
-  border: 1px solid rgba(207,152,167,.35);
+  border: 1px solid rgba(145,183,216,.35);
 }
 .panel.accent .tItem{
   background: rgba(255,255,255,.14);
@@ -313,7 +311,7 @@ body{
   width: 36px; height: 36px;
   border-radius: 999px;
   display:grid; place-items:center;
-  background: rgba(212,138,160,.18);
+  background: rgba(110,167,216,.18);
   color: var(--accent);
 }
 .panel.accent .tIcon{
@@ -334,7 +332,6 @@ body{
   opacity: .9;
 }
 
-/* swatches */
 .swatches{
   display:flex;
   justify-content:center;
@@ -347,7 +344,6 @@ body{
   border: 1px solid rgba(0,0,0,.10);
 }
 
-/* contact */
 .contactRow{
   display:flex;
   align-items:center;
@@ -357,7 +353,7 @@ body{
   padding: 10px 12px;
   border-radius: 16px;
   background: rgba(255,255,255,.55);
-  border: 1px solid rgba(207,152,167,.35);
+  border: 1px solid rgba(145,183,216,.35);
 }
 .contactName{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -368,7 +364,7 @@ body{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   text-decoration:none;
   color: rgba(255,255,255,.92);
-  background: rgba(212,138,160,.92);
+  background: rgba(110,167,216,.95);
   padding: 8px 10px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.22);
@@ -382,7 +378,6 @@ body{
   color: var(--muted);
 }
 
-/* form */
 .form{display:grid; gap:10px; margin-top: 10px;}
 .lbl{
   display:grid;
@@ -403,7 +398,7 @@ body{
 .panel:not(.accent) .in{
   color: var(--ink);
   background: rgba(255,255,255,.70);
-  border-color: rgba(207,152,167,.45);
+  border-color: rgba(145,183,216,.45);
 }
 .in::placeholder{opacity:.85}
 .in:focus{
@@ -411,7 +406,6 @@ body{
   box-shadow: 0 0 0 4px rgba(255,255,255,.12);
 }
 
-/* buttons */
 .btn{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   font-size: 13px;
@@ -429,20 +423,20 @@ body{
 }
 .btn:hover{background: rgba(255,255,255,.22);}
 .btn.primary{
-  background: rgba(212,138,160,.95);
+  background: rgba(110,167,216,.95);
   border-color: rgba(255,255,255,.30);
 }
 .btn.full{width:100%;}
 .btn:disabled{opacity:.6; cursor:not-allowed;}
 
 .panel:not(.accent) .btn{
-  background: rgba(212,138,160,.22);
-  border-color: rgba(207,152,167,.55);
+  background: rgba(110,167,216,.20);
+  border-color: rgba(145,183,216,.55);
   color: var(--ink);
 }
-.panel:not(.accent) .btn:hover{background: rgba(212,138,160,.28);}
+.panel:not(.accent) .btn:hover{background: rgba(110,167,216,.28);}
 .panel:not(.accent) .btn.primary{
-  background: rgba(212,138,160,.95);
+  background: rgba(110,167,216,.95);
   border-color: rgba(255,255,255,.35);
   color: rgba(255,255,255,.95);
 }
@@ -459,7 +453,6 @@ body{
 .status.ok{background: rgba(255,255,255,.18);}
 .status.error{background: rgba(255,255,255,.18);}
 
-/* small decorative lines */
 .doves, .carline{
   margin: 12px auto 0;
   width: 78%;
@@ -468,7 +461,7 @@ body{
   opacity:.7;
 }
 .panel:not(.accent) .carline{
-  border-top-color: rgba(207,152,167,.65);
+  border-top-color: rgba(145,183,216,.65);
 }
 
 .bye{
@@ -481,7 +474,6 @@ body{
   padding: 8px 0 2px;
 }
 
-/* footer */
 .foot{padding: 18px 6px 28px;}
 .footLine{
   height: 1px;
@@ -495,7 +487,6 @@ body{
   font-size: 12px;
 }
 
-/* Mobile: stack */
 @media (max-width: 980px){
   .brandSub{display:none;}
 }
@@ -508,7 +499,6 @@ body{
   .posterLinks{flex-direction:column;}
 }
 
-/* Respect very tall screens: keep proportions readable */
 @media (max-width: 420px){
   .heart{padding: 12px;}
   .card{padding: 12px;}
