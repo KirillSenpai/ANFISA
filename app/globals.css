@@ -1,14 +1,14 @@
 :root{
-  --bg:#e8ddd3;
-  --bg-deep:#d8c7b9;
-  --paper:#f8f4ef;
-  --paper-soft:#f1e7dc;
-  --ink:#6f5d51;
-  --ink-soft:#99877b;
-  --line:#d5c2b1;
-  --accent:#b8a494;
-  --accent-deep:#8f7868;
-  --shadow:0 20px 60px rgba(97,72,54,.10);
+  --bg:#ead9d1;
+  --bg-deep:#d6bdb4;
+  --paper:#fbf6f2;
+  --paper-soft:#f4e8e1;
+  --ink:#6f5b57;
+  --ink-soft:#9c8781;
+  --line:#dbc5bc;
+  --accent:#c9aba1;
+  --accent-deep:#8e6f69;
+  --shadow:0 24px 70px rgba(111,79,72,.12);
   --radius:34px;
 }
 
@@ -21,9 +21,9 @@ body{
   margin:0;
   color:var(--ink);
   background:
-    radial-gradient(circle at 20% 10%, rgba(255,255,255,.62), transparent 24%),
-    radial-gradient(circle at 80% 15%, rgba(255,255,255,.48), transparent 26%),
-    linear-gradient(180deg, #efe5dc 0%, #e7d9cd 45%, #e1d0c2 100%);
+    radial-gradient(circle at 18% 10%, rgba(255,244,236,.75), transparent 24%),
+    radial-gradient(circle at 82% 14%, rgba(255,226,214,.48), transparent 26%),
+    linear-gradient(180deg, #f0e1d8 0%, #e7d4ca 45%, #dfcbc0 100%);
   font-family: "Times New Roman", Georgia, serif;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
@@ -39,9 +39,9 @@ body{
   position:fixed;
   inset:0;
   background:
-    radial-gradient(1200px 500px at 0% 0%, rgba(255,255,255,.45), transparent 60%),
-    radial-gradient(800px 600px at 100% 20%, rgba(255,255,255,.35), transparent 55%),
-    linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,0) 35%),
+    radial-gradient(1200px 500px at 0% 0%, rgba(255,247,241,.55), transparent 60%),
+    radial-gradient(800px 600px at 100% 20%, rgba(255,231,223,.30), transparent 55%),
+    linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,0) 35%),
     repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 2px, transparent 2px 10px);
   opacity:.9;
   pointer-events:none;
@@ -114,8 +114,10 @@ body{
 }
 
 .heroPhoto{
-  aspect-ratio:4 / 5;
+  aspect-ratio:4 / 5.2;
   margin:0 auto;
+  border:1px solid rgba(219,197,188,.8);
+  box-shadow:0 20px 50px rgba(132,96,88,.14);
 }
 
 .photoCorners{
@@ -141,8 +143,8 @@ body{
 
 .heroImage{
   object-fit:cover;
-  object-position:center;
-  filter:saturate(.88) contrast(.95) brightness(1.02);
+  object-position:center top;
+  filter:saturate(.93) contrast(.96) brightness(1.01);
 }
 
 .heroNames{
@@ -151,7 +153,7 @@ body{
   line-height:.92;
   text-transform:uppercase;
   letter-spacing:.02em;
-  color:#b6a596;
+  color:#b69a92;
 }
 
 .heroDate{
@@ -162,7 +164,7 @@ body{
 
 .heroMiniHeart{
   margin-top:16px;
-  color:#a98f80;
+  color:#c08e80;
   font-size:30px;
   line-height:1;
 }
@@ -183,7 +185,7 @@ body{
   font-size:clamp(34px, 5vw, 60px);
   line-height:.94;
   font-weight:400;
-  color:#b7a698;
+  color:#baa097;
   letter-spacing:.03em;
 }
 
@@ -205,7 +207,7 @@ body{
 .dateLarge{
   text-align:center;
   font-size:clamp(34px, 5vw, 58px);
-  color:#b7a698;
+  color:#baa097;
   letter-spacing:.08em;
   margin-bottom:16px;
 }
@@ -253,7 +255,7 @@ body{
   height:32px;
   margin:auto;
   border-radius:999px 999px 60% 60%;
-  background:rgba(184,164,148,.92);
+  background:rgba(201,171,161,.94);
   transform:rotate(-15deg);
   z-index:-1;
 }
@@ -264,7 +266,9 @@ body{
 }
 
 .secondaryPhoto{
-  aspect-ratio:16 / 10;
+  aspect-ratio:16 / 9;
+  border-top:1px solid rgba(219,197,188,.65);
+  border-bottom:1px solid rgba(219,197,188,.65);
 }
 
 .timingSection{
@@ -312,7 +316,7 @@ body{
 .timelineTime{
   font-size:clamp(28px, 4vw, 48px);
   line-height:1;
-  color:#b7a698;
+  color:#baa097;
 }
 
 .timelineTitle{
@@ -320,7 +324,7 @@ body{
   font-size:clamp(24px, 3.5vw, 40px);
   line-height:.98;
   text-transform:uppercase;
-  color:#b7a698;
+  color:#baa097;
 }
 
 .timelineText{
@@ -349,7 +353,7 @@ body{
 .locationCaption{
   text-align:center;
   font-size:28px;
-  color:#b7a698;
+  color:#baa097;
   margin-bottom:10px;
 }
 
@@ -378,7 +382,7 @@ body{
   width:100%;
   margin-top:20px;
   padding:16px 18px;
-  background:#b9ab9d;
+  background:#b9a39a;
   color:#fffdfa;
   font-family: Arial, Helvetica, sans-serif;
   font-size:17px;
@@ -419,7 +423,7 @@ body{
 
 .contactName{
   font-size:24px;
-  color:#b7a698;
+  color:#baa097;
 }
 
 .contactPhone{
@@ -477,7 +481,7 @@ body{
   width:100%;
   padding:16px 18px;
   margin-top:6px;
-  background:#8f7868;
+  background:#8e706a;
   color:#fffdfa;
   font-family: Arial, Helvetica, sans-serif;
   font-size:16px;
@@ -496,7 +500,7 @@ body{
   margin-top:26px;
   text-align:center;
   font-size:44px;
-  color:#b7a698;
+  color:#c08e80;
 }
 
 .rsvpFloating{
