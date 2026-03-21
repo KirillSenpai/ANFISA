@@ -18,37 +18,31 @@ export const INVITE = {
 
   registrationTitle: "Регистрация",
   registrationVenue: "Отдел ЗАГС",
-  registrationAddress: "Челябинск, адрес регистрации добавьте здесь",
-  registrationMapLink: "https://yandex.ru/maps/",
+  registrationAddress: "Челябинск, улица Румянцева, 33",
+  registrationMapLink: "https://yandex.ru/maps/?text=%D0%A7%D0%B5%D0%BB%D1%8F%D0%B1%D0%B8%D0%BD%D1%81%D0%BA%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A0%D1%83%D0%BC%D1%8F%D0%BD%D1%86%D0%B5%D0%B2%D0%B0%2C%2033",
 
-  venue: "Банкет",
+  venue: "Место проведения — банкетный зал «Перламутр»",
   address: "Челябинск, ул. Богдана Хмельницкого, 4",
   mapLink: "https://yandex.ru/maps/?text=%D0%A7%D0%B5%D0%BB%D1%8F%D0%B1%D0%B8%D0%BD%D1%81%D0%BA%2C%20%D1%83%D0%BB.%20%D0%91%D0%BE%D0%B3%D0%B4%D0%B0%D0%BD%D0%B0%20%D0%A5%D0%BC%D0%B5%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D0%BA%D0%BE%D0%B3%D0%BE%2C%204",
 
   scheduleTitle: "Тайминг",
   schedule: [
     {
-      time: "16:00",
-      title: "Сбор гостей",
-      description: "Встречаемся, обнимаемся и начинаем этот день с лёгкого приветственного настроения.",
-      icon: "heart"
-    },
-    {
-      time: "16:40",
+      time: "13:00",
       title: "Церемония",
-      description: "Самый трогательный момент, когда мы скажем друг другу самые важные слова.",
+      description: "По желанию можно присоединиться к регистрации и разделить с нами самый трогательный момент дня.",
       icon: "heart"
     },
     {
-      time: "17:30",
-      title: "Праздничный ужин",
-      description: "Разделим радость, тёплые разговоры, музыку и красивый вечер вместе.",
+      time: "16:00",
+      title: "Банкет",
+      description: "Собираемся в банкетном зале, чтобы отметить этот день в тёплой и красивой атмосфере.",
       icon: "heart"
     },
     {
-      time: "23:00",
+      time: "22:00",
       title: "Завершение вечера",
-      description: "Финал праздника, который мы очень хотим провести рядом с вами.",
+      description: "Финал нашего праздника и тёплое завершение свадебного вечера.",
       icon: "heart"
     }
   ],
