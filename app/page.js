@@ -140,9 +140,10 @@ export default function Page() {
                 <Image
                   src={INVITE.photoMain}
                   alt={INVITE.photoAlt}
-                  fill
+                  width={1019}
+                  height={768}
                   sizes="(max-width: 900px) 100vw, 560px"
-                  className="heroImage"
+                  className="heroImage heroImageNatural"
                   priority
                 />
               </div>
@@ -185,9 +186,10 @@ export default function Page() {
                 <Image
                   src={INVITE.photoSecondary || INVITE.photoMain}
                   alt={INVITE.photoAlt}
-                  fill
+                  width={1019}
+                  height={768}
                   sizes="(max-width: 900px) 100vw, 560px"
-                  className="heroImage"
+                  className="heroImage heroImageNatural"
                 />
               </div>
             </section>

@@ -114,7 +114,7 @@ body{
 }
 
 .heroPhoto{
-  aspect-ratio:4 / 5.2;
+  aspect-ratio:1019 / 768;
   margin:0 auto;
   border:1px solid rgba(219,197,188,.8);
   box-shadow:0 20px 50px rgba(132,96,88,.14);
@@ -143,8 +143,14 @@ body{
 
 .heroImage{
   object-fit:cover;
-  object-position:center top;
-  filter:saturate(.93) contrast(.96) brightness(1.01);
+  object-position:center;
+}
+
+.heroImageNatural{
+  width:100%;
+  height:auto;
+  display:block;
+  filter:none;
 }
 
 .heroNames{
@@ -266,7 +272,7 @@ body{
 }
 
 .secondaryPhoto{
-  aspect-ratio:16 / 9;
+  aspect-ratio:1019 / 768;
   border-top:1px solid rgba(219,197,188,.65);
   border-bottom:1px solid rgba(219,197,188,.65);
 }
