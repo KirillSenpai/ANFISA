@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { INVITE } from "./invite-data";
 
@@ -117,6 +117,26 @@ export default function Page() {
   const { dateStr, pretty, time, d } = useMemo(() => formatDate(INVITE.dateIso), []);
   const cal = useMemo(() => monthCalendar(d), [d]);
   const [status, setStatus] = useState({ kind: "idle", msg: "" });
+  const rsvpRef = useRef(null);
+
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+  }, []);
+
+  function scrollToRsvp(e) {
+    e.preventDefault();
+    rsvpRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   async function onRsvpSubmit(e) {
     e.preventDefault();
@@ -159,7 +179,7 @@ export default function Page() {
           <div className="brand">
              <span className="brandSub">(сайт) — электронное приглашение</span>
           </div>
-          <a className="topbtn" href="#rsvp">
+          <a className="topbtn" href="#rsvp" onClick={scrollToRsvp}>
             подтвердить присутствие
           </a>
         </header>
@@ -233,7 +253,7 @@ export default function Page() {
                 <a className="btn" href={INVITE.mapLink} target="_blank" rel="noreferrer">
                   карта
                 </a>
-                <a className="btn primary" href="#rsvp">
+                <a className="btn primary" href="#rsvp" onClick={scrollToRsvp}>
                   RSVP
                 </a>
               </div>
@@ -287,7 +307,7 @@ export default function Page() {
               <div className="contactHint">{INVITE.organizerPhoneText}</div>
             </section>
 
-            <section id="rsvp" className="panel accent">
+            <section id="rsvp" ref={rsvpRef} className="panel accent">
               <h3 className="panelTitle">{INVITE.rsvpTitle}</h3>
               <p className="panelText">{INVITE.rsvpText}</p>
 
