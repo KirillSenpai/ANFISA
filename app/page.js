@@ -127,11 +127,6 @@ export default function Page() {
       <div className="backdrop" aria-hidden="true" />
 
       <div className="frameShell">
-        <header className="heroBar">
-          <div className="heroLabel">{INVITE.siteLabel}</div>
-          <div className="heroSubLabel">{INVITE.siteSubLabel}</div>
-        </header>
-
         <section className="editorialGrid">
           <article className="paperColumn primaryColumn">
             <div className="photoCard">
@@ -204,11 +199,20 @@ export default function Page() {
 
             <section className="paperSection locationSection">
               <h2 className="sectionTitle small">{INVITE.locationTitle}</h2>
-              <div className="locationGallery single">
-                <div className="locationShot locationShotSingle">
+              <div className="locationGallery">
+                <div className="locationShot locationShotPrimary">
                   <Image
                     src={INVITE.locationPhoto}
                     alt={INVITE.locationPhotoAlt}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 420px"
+                    className="heroImage"
+                  />
+                </div>
+                <div className="locationShot locationShotSecondary">
+                  <Image
+                    src={INVITE.locationInsidePhoto}
+                    alt={INVITE.locationInsidePhotoAlt}
                     fill
                     sizes="(max-width: 900px) 100vw, 420px"
                     className="heroImage"
@@ -219,6 +223,15 @@ export default function Page() {
               <div className="locationAddress">{INVITE.address}</div>
               <a className="mapButton" href={INVITE.mapLink} target="_blank" rel="noreferrer">
                 Посмотреть на карте
+              </a>
+            </section>
+
+            <section className="paperSection locationSection">
+              <h2 className="sectionTitle small">{INVITE.registrationTitle}</h2>
+              <div className="locationCaption">{INVITE.registrationVenue}</div>
+              <div className="locationAddress">{INVITE.registrationAddress}</div>
+              <a className="mapButton" href={INVITE.registrationMapLink} target="_blank" rel="noreferrer">
+                Открыть место регистрации
               </a>
             </section>
 
