@@ -139,10 +139,10 @@ export default function Page() {
                 <Image
                   src={INVITE.photoMain}
                   alt={INVITE.photoAlt}
-                  width={768}
-                  height={1019}
+                  width={798}
+                  height={880}
                   sizes="(max-width: 900px) 100vw, 560px"
-                  className="heroImage heroImagePortrait"
+                  className="heroImage heroImageNatural"
                   priority
                 />
               </div>
@@ -174,7 +174,7 @@ export default function Page() {
                           : "calendarCell"
                     }
                   >
-                    {cell.active && <span className="calendarHeart" aria-hidden="true">♡</span>}
+                    {cell.active && <span className="calendarHeart" aria-hidden="true">♥</span>}
                     <span className="calendarNumber">{cell.v}</span>
                   </div>
                 ))}

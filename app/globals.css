@@ -17,7 +17,7 @@ html,body{
   min-height:100%;
   width:100%;
   max-width:100%;
-  overflow-x:hidden;
+  overflow-x:clip;
 }
 body{
   margin:0;
@@ -36,7 +36,8 @@ body{
   min-height:100vh;
   position:relative;
   width:100%;
-  overflow-x:hidden;
+  max-width:100%;
+  overflow-x:clip;
 }
 
 .backdrop{
@@ -57,6 +58,7 @@ body{
   margin:0 auto;
   padding:42px 18px 64px;
   width:100%;
+  max-width:100%;
 }
 
 .heroBar{
@@ -86,6 +88,8 @@ body{
   grid-template-columns:minmax(0, 1.04fr) minmax(360px, .96fr);
   gap:28px;
   align-items:start;
+  width:100%;
+  max-width:100%;
 }
 
 .paperColumn{
@@ -95,6 +99,8 @@ body{
   box-shadow:var(--shadow);
   overflow:hidden;
   backdrop-filter:blur(2px);
+  min-width:0;
+  max-width:100%;
 }
 
 .primaryColumn{
@@ -119,11 +125,12 @@ body{
 }
 
 .heroPhoto{
-  aspect-ratio:768 / 1019;
+  aspect-ratio:798 / 880;
   margin:0 auto;
   max-width:560px;
   border:1px solid rgba(219,197,188,.8);
   box-shadow:0 20px 50px rgba(132,96,88,.14);
+  background:transparent;
 }
 
 .heroImage{
@@ -244,7 +251,7 @@ body{
 }
 
 .calendarCell.active{
-  color:var(--accent-deep);
+  color:#fff7f2;
   font-weight:700;
 }
 
@@ -253,7 +260,7 @@ body{
   top:50%;
   left:50%;
   transform:translate(-50%, -50%);
-  font-size:36px;
+  font-size:38px;
   line-height:1;
   color:rgba(201,171,161,1);
   pointer-events:none;
@@ -522,6 +529,7 @@ body{
 
   .editorialGrid{
     grid-template-columns:1fr;
+    gap:18px;
   }
 
   .primaryColumn,
@@ -542,7 +550,7 @@ body{
 
 @media (max-width: 560px){
   .frameShell{
-    padding:20px 10px 40px;
+    padding:18px 8px 36px;
   }
 
   .heroLabel{
@@ -559,6 +567,15 @@ body{
 
   .sectionTitle.small{
     font-size:28px;
+  }
+
+  .paperColumn{
+    border-radius:20px;
+  }
+
+  .heroPhoto,
+  .locationShot{
+    border-radius:20px;
   }
 
   .timelineItem{
@@ -590,7 +607,9 @@ body{
   .form,
   .paperColumn,
   .primaryColumn,
-  .secondaryColumn{
+  .secondaryColumn,
+  .heroBar{
     min-width:0;
+    max-width:100%;
   }
 }
