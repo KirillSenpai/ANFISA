@@ -502,6 +502,32 @@ body{
   color:#c08e80;
 }
 
+.countdown{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:10px;
+  margin-top:18px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:13px;
+  color:var(--ink);
+}
+
+.countdown span{
+  display:grid;
+  gap:4px;
+  padding:10px 8px;
+  border:1px solid rgba(213,194,177,.72);
+  border-radius:14px;
+  background:rgba(255,255,255,.42);
+}
+
+.countdown strong{
+  font-family:"Times New Roman", Georgia, serif;
+  font-size:24px;
+  line-height:1;
+  color:var(--accent-deep);
+}
+
 @media (max-width: 900px){
   .frameShell{
     padding:28px 12px 48px;
@@ -633,6 +659,10 @@ body{
   .leadText,
   .bodyText{
     font-size:15px;
+  }
+
+  .countdown{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
   }
 
   .locationGallery{

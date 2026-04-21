@@ -24,6 +24,8 @@ export async function POST(req) {
     const name = (body?.name || "").toString().trim();
     const attend = (body?.attend || "").toString().trim();
     const guests = (body?.guests || "").toString().trim();
+    const drink = (body?.drink || "").toString().trim();
+    const afterparty = (body?.afterparty || "").toString().trim();
     const note = (body?.note || "").toString().trim();
 
     if (name.length < 2) {
@@ -41,6 +43,8 @@ export async function POST(req) {
       `<b>Имя:</b> ${esc(name)}\n` +
       `<b>Будет:</b> ${esc(attend)}\n` +
       `<b>Гостей:</b> ${esc(guests || "-")}\n` +
+      `<b>Напитки:</b> ${esc(drink || "-")}\n` +
+      `<b>Продолжение банкета:</b> ${esc(afterparty || "-")}\n` +
       `<b>Комментарий:</b> ${esc(note || "-")}`;
 
     const url = `https://api.telegram.org/bot${botToken}/sendMessage`;

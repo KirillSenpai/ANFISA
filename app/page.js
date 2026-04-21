@@ -12,6 +12,7 @@ function formatDate(iso) {
     month: "2-digit",
     year: "numeric"
   });
+  const dateSlash = dateNumeric.replaceAll(".", "/");
   const pretty = d.toLocaleDateString("ru-RU", {
     day: "numeric",
     month: "long",
@@ -22,7 +23,7 @@ function formatDate(iso) {
     minute: "2-digit"
   });
 
-  return { dateNumeric, pretty, time, d };
+  return { dateNumeric, dateSlash, pretty, time, d };
 }
 
 function monthCalendar(dateObj) {
@@ -64,10 +65,22 @@ function HeartMarker() {
   return <span className="timelineHeart" aria-hidden="true">♥</span>;
 }
 
+function getCountdown(targetDate) {
+  const diff = Math.max(0, targetDate.getTime() - Date.now());
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return { days, hours, minutes, seconds };
+}
+
 export default function Page() {
-  const { dateNumeric, pretty, time, d } = useMemo(() => formatDate(INVITE.dateIso), []);
+  const { dateNumeric, dateSlash, d } = useMemo(() => formatDate(INVITE.dateIso), []);
   const calendar = useMemo(() => monthCalendar(d), [d]);
   const [status, setStatus] = useState({ kind: "idle", msg: "" });
+  const [countdown, setCountdown] = useState(() => getCountdown(d));
   const rsvpRef = useRef(null);
 
   useEffect(() => {
@@ -84,6 +97,14 @@ export default function Page() {
     requestAnimationFrame(reset);
     setTimeout(reset, 120);
   }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setCountdown(getCountdown(d));
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [d]);
 
   function scrollToRsvp(event) {
     event.preventDefault();
@@ -105,6 +126,8 @@ export default function Page() {
           name: data.name,
           attend: data.attend,
           guests: data.guests,
+          drink: data.drink,
+          afterparty: data.afterparty,
           note: data.note
         })
       });
@@ -142,7 +165,7 @@ export default function Page() {
                 />
               </div>
               <div className="heroNames">{INVITE.couple}</div>
-              <div className="heroDate">{pretty}</div>
+              <div className="heroDate">{dateSlash}</div>
               <div className="heroMiniHeart">♥</div>
             </div>
 
@@ -152,6 +175,7 @@ export default function Page() {
             </section>
 
             <section className="paperSection calendarSection">
+              <h2 className="sectionTitle small">Дата бракосочетания</h2>
               <div className="dateLarge">{dateNumeric}</div>
               <div className="calendarHead">{monthNameRu(calendar.month)}</div>
               <div className="calendarGrid">
@@ -307,6 +331,24 @@ export default function Page() {
                 </label>
 
                 <label className="field">
+                  Ваши предпочтения по напиткам?
+                  <select className="input" name="drink" defaultValue={INVITE.form.drinkOptions[0]} required>
+                    {INVITE.form.drinkOptions.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="field">
+                  Хотели бы продолжения банкета?
+                  <select className="input" name="afterparty" defaultValue={INVITE.form.afterpartyOptions[0]} required>
+                    {INVITE.form.afterpartyOptions.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="field">
                   Комментарий
                   <textarea className="input textarea" name="note" rows={4} placeholder={INVITE.form.notePlaceholder} />
                 </label>
@@ -319,7 +361,15 @@ export default function Page() {
               </form>
             </section>
 
-            <div className="farewell">{INVITE.footerFarewell}</div>
+            <div className="farewell">
+              <div>{INVITE.footerFarewell} {INVITE.footerHeart}</div>
+              <div className="countdown" aria-label="Обратный отсчёт до свадьбы">
+                <span><strong>{countdown.days}</strong> дней</span>
+                <span><strong>{countdown.hours}</strong> часов</span>
+                <span><strong>{countdown.minutes}</strong> минут</span>
+                <span><strong>{countdown.seconds}</strong> секунд</span>
+              </div>
+            </div>
           </aside>
         </section>
       </div>

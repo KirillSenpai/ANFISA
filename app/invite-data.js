@@ -1,16 +1,15 @@
 export const INVITE = {
-  couple: "Анфиса & Егор",
+  couple: "Егор & Анфиса",
   dateIso: "2026-08-15T16:00:00+05:00",
   city: "Челябинск",
 
   posterTitleTop: "Свадебное приглашение",
   posterSubtitle: "день, который хочется разделить с близкими",
-  posterHeadline: "Дорогие гости!",
-  posterText:
-    "Впереди наш самый важный день. Мы будем счастливы видеть вас рядом, чтобы вместе прожить этот тёплый и красивый праздник любви.",
+  posterHeadline: "Дорогие друзья и близкие!",
+  posterText: "Мы женимся и будем рады разделить этот день с вами!",
 
   photoMain: "/image.jpg",
-  photoAlt: "Анфиса и Егор",
+  photoAlt: "Егор и Анфиса",
   locationPhoto: "/place.webp",
   locationPhotoAlt: "Локация свадьбы",
   locationInsidePhoto: "/inside.jpg",
@@ -50,22 +49,18 @@ export const INVITE = {
   locationTitle: "Локация",
   locationCaption: "Площадка торжества",
 
-  wishesTitle: "Пожелания",
-  wishesText:
-    "Если захотите порадовать нас подарком, мы будем благодарны за вклад в наш общий старт и мечты.",
-
   dressTitle: "Дресс-код",
   dressText:
-    "Нам будет очень приятно, если в ваших образах появятся природные, молочные, нежно-розовые и приглушённо-зелёные оттенки из нашей палитры.",
+    "Будем рады видеть вас в цветах, которые мы выбрали для праздника — это добавит особого настроения!",
   dressColors: ["#818263", "#c2c395", "#ddbaae", "#efd7cf", "#dcd4c1", "#f6ead4", "#fffaf2"],
 
-  extraTitle: "Дополнительно",
-  extraText: "Если появятся вопросы, можно связаться с организатором:",
-  organizerName: "Организатор (имя)",
-  organizerPhoneText: "+7 (900) 000-00-00",
-  organizerPhoneTel: "+79000000000",
+  extraTitle: "Контакты",
+  extraText: "Наш ведущий — Полина",
+  organizerName: "Полина",
+  organizerPhoneText: "8 950 725-40-68",
+  organizerPhoneTel: "+79507254068",
 
-  rsvpTitle: "Анкета",
+  rsvpTitle: "Анкета гостя",
   rsvpText:
     "Пожалуйста, заполните форму, чтобы нам было проще всё подготовить и позаботиться о вашем комфорте.",
 
@@ -73,10 +68,13 @@ export const INVITE = {
     namePlaceholder: "Иван Иванов",
     attendOptions: ["Да, буду", "Пока не уверен(а)", "К сожалению, не смогу"],
     guestsOptions: ["1", "2", "3", "4"],
+    drinkOptions: ["шампанское", "вино", "крепкий алкоголь", "не буду пить алкоголь"],
+    afterpartyOptions: ["да", "нет"],
     notePlaceholder: "Например: без орехов"
   },
 
-  footerFarewell: "До встречи!"
+  footerFarewell: "Ждём вас на празднике создания нашей семьи",
+  footerHeart: "♥"
 };
 
 export const SITE_METADATA = {
