@@ -73,6 +73,8 @@ function findMatches(grid) {
 
 function collapseAndRefill(grid, cleared) {
   const next = [...grid];
+  const freshIndices = new Set();
+
   for (let c = 0; c < GRID_SIZE; c++) {
     const colVals = [];
     for (let r = 0; r < GRID_SIZE; r++) {
@@ -83,9 +85,11 @@ function collapseAndRefill(grid, cleared) {
     const merged = [...freshVals, ...colVals];
     for (let r = 0; r < GRID_SIZE; r++) {
       next[idx(r, c)] = merged[r];
+      if (r < missing) freshIndices.add(idx(r, c));
     }
   }
-  return next;
+
+  return { grid: next, freshIndices };
 }
 
 function wait(ms) {
@@ -96,6 +100,9 @@ export default function Match3Game({ onComplete }) {
   const [grid, setGrid] = useState(generateGrid);
   const [selected, setSelected] = useState(null);
   const [reject, setReject] = useState([]);
+  const [swapPair, setSwapPair] = useState([]);
+  const [matchedCells, setMatchedCells] = useState(() => new Set());
+  const [freshCells, setFreshCells] = useState(() => new Set());
   const [resolving, setResolving] = useState(false);
   const [score, setScore] = useState(0);
 
@@ -108,10 +115,16 @@ export default function Match3Game({ onComplete }) {
       const matches = findMatches(current);
       if (matches.size === 0) break;
       clearedTotal += matches.size;
-      await wait(200);
-      current = collapseAndRefill(current, matches);
+      setMatchedCells(matches);
+      await wait(280);
+
+      const { grid: collapsed, freshIndices } = collapseAndRefill(current, matches);
+      current = collapsed;
+      setMatchedCells(new Set());
+      setFreshCells(freshIndices);
       setGrid(current);
-      await wait(220);
+      await wait(300);
+      setFreshCells(new Set());
     }
 
     setScore((s) => s + clearedTotal);
@@ -148,6 +161,8 @@ export default function Match3Game({ onComplete }) {
       return;
     }
 
+    setSwapPair([prevSelected, i]);
+    window.setTimeout(() => setSwapPair([]), 260);
     setGrid(swapped);
     setResolving(true);
     resolveCascade(swapped);
@@ -168,7 +183,16 @@ export default function Match3Game({ onComplete }) {
           <button
             key={i}
             type="button"
-            className={`match3Cell ${selected === i ? "isSelected" : ""} ${reject.includes(i) ? "isReject" : ""}`}
+            className={[
+              "match3Cell",
+              selected === i && "isSelected",
+              reject.includes(i) && "isReject",
+              swapPair.includes(i) && "isSwapping",
+              matchedCells.has(i) && "isMatched",
+              freshCells.has(i) && "isFresh"
+            ]
+              .filter(Boolean)
+              .join(" ")}
             onClick={() => handleTapCell(i)}
             disabled={resolving}
             aria-label="клетка"

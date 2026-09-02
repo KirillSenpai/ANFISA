@@ -9,6 +9,7 @@ import {
   KISS_REGULAR,
   KISS_SPECIAL,
   KissContext,
+  Portal,
   Sticker,
   SparkleField,
   useHeartBurst,
@@ -82,19 +83,21 @@ function HeroChapter() {
       <Sticker src="/img/gif-08.gif" style={{ bottom: "8%", right: "0%" }} startX={42} startY={30} startRot={-20} rot={-6} delay={200} />
       <Sticker src="/img/gif-02.gif" style={{ bottom: "10%", left: "0%" }} startX={-42} startY={30} startRot={20} rot={9} delay={300} />
 
-      <div className="heroTop">{BIRTHDAY.heroTitleTop}</div>
-      <h1 className="heroName">{BIRTHDAY.name}</h1>
-      <div className="heroUnderline" aria-hidden="true">
-        <svg viewBox="0 0 200 14" preserveAspectRatio="none">
-          <path d="M2 10 Q 50 -4 100 8 T 198 6" fill="none" stroke="var(--pink-2)" strokeWidth="4" strokeLinecap="round" />
-        </svg>
-      </div>
-      <p className="heroSubtitle">{BIRTHDAY.heroSubtitle}</p>
-      <Bouncy as="button" type="button" className="heroPetName" spawnHearts>
-        {BIRTHDAY.petName}
-      </Bouncy>
+      <div className="panelScroll">
+        <div className="heroTop">{BIRTHDAY.heroTitleTop}</div>
+        <h1 className="heroName">{BIRTHDAY.name}</h1>
+        <div className="heroUnderline" aria-hidden="true">
+          <svg viewBox="0 0 200 14" preserveAspectRatio="none">
+            <path d="M2 10 Q 50 -4 100 8 T 198 6" fill="none" stroke="var(--pink-2)" strokeWidth="4" strokeLinecap="round" />
+          </svg>
+        </div>
+        <p className="heroSubtitle">{BIRTHDAY.heroSubtitle}</p>
+        <Bouncy as="button" type="button" className="heroPetName" spawnHearts>
+          {BIRTHDAY.petName}
+        </Bouncy>
 
-      <Countdown />
+        <Countdown />
+      </div>
     </section>
   );
 }
@@ -103,15 +106,16 @@ function LetterChapter() {
   return (
     <section className="card chapterPanel">
       <Sticker src="/img/gif-03.gif" style={{ top: "-20px", left: "-20px" }} startX={-42} startY={-30} startRot={-28} rot={-9} />
-      <Sticker src="/img/gif-07.gif" style={{ bottom: "-16px", right: "-20px" }} startX={42} startY={30} startRot={26} rot={7} delay={150} />
       <Sticker src="/img/photo-01.png" style={{ top: "38%", right: "-24px" }} startX={44} startY={0} startRot={20} rot={-4} delay={280} />
 
-      <Bouncy as="p" className="shortGreeting" spawnHearts>
-        {BIRTHDAY.shortGreeting}
-      </Bouncy>
-      {BIRTHDAY.letterParagraphs.map((paragraph) => (
-        <p className="bodyText" key={paragraph}>{paragraph}</p>
-      ))}
+      <div className="panelScroll">
+        <Bouncy as="p" className="shortGreeting" spawnHearts>
+          {BIRTHDAY.shortGreeting}
+        </Bouncy>
+        {BIRTHDAY.letterParagraphs.map((paragraph) => (
+          <p className="bodyText" key={paragraph}>{paragraph}</p>
+        ))}
+      </div>
     </section>
   );
 }
@@ -120,6 +124,15 @@ function CollageChapter() {
   const { title, subtitle, slots, photos } = BIRTHDAY.collage;
   const items = Array.from({ length: slots }, (_, index) => photos[index] || null);
   const spawnKiss = useContext(KissContext);
+  const [zoomed, setZoomed] = useState(null);
+
+  function handleSlotClick(event, item) {
+    if (item) {
+      setZoomed(item);
+    } else {
+      spawnKiss(event.clientX, event.clientY);
+    }
+  }
 
   return (
     <section className="card chapterPanel">
@@ -127,31 +140,44 @@ function CollageChapter() {
       <Sticker src="/img/gif-09.gif" style={{ bottom: "-16px", right: "-20px" }} startX={42} startY={30} startRot={24} rot={6} delay={140} />
       <Sticker src="/img/photo-04.png" style={{ top: "-20px", right: "-20px" }} startX={42} startY={-30} startRot={-20} rot={9} delay={260} />
 
-      <Bouncy as="h2" className="sectionTitle" spawnHearts>
-        {title}
-      </Bouncy>
-      <p className="sectionSubtitle">{subtitle}</p>
+      <div className="panelScroll">
+        <Bouncy as="h2" className="sectionTitle" spawnHearts>
+          {title}
+        </Bouncy>
+        <p className="sectionSubtitle">{subtitle}</p>
 
-      <div className="collageGrid">
-        {items.map((item, index) => (
-          <button
-            key={index}
-            type="button"
-            className="collageSlot"
-            style={{ "--tilt": `${tiltFor(index + 4)}deg` }}
-            onClick={(event) => spawnKiss(event.clientX, event.clientY)}
-          >
-            {item ? (
-              <img src={item.src} alt={item.caption || ""} loading="lazy" />
-            ) : (
-              <div className="collagePlaceholder">
-                <span className="collageIcon" aria-hidden="true">📷</span>
-                <span>фото скоро здесь</span>
-              </div>
-            )}
-          </button>
-        ))}
+        <div className="collageGrid">
+          {items.map((item, index) => (
+            <button
+              key={index}
+              type="button"
+              className="collageSlot"
+              style={{ "--tilt": `${tiltFor(index + 4)}deg` }}
+              onClick={(event) => handleSlotClick(event, item)}
+            >
+              {item ? (
+                <img src={item.src} alt={item.caption || ""} loading="lazy" />
+              ) : (
+                <div className="collagePlaceholder">
+                  <span className="collageIcon" aria-hidden="true">📷</span>
+                  <span>фото скоро здесь</span>
+                </div>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {zoomed && (
+        <Portal>
+          <div className="collageZoomOverlay" onClick={() => setZoomed(null)}>
+            <button type="button" className="collageZoomClose" onClick={() => setZoomed(null)} aria-label="Закрыть">
+              ×
+            </button>
+            <img src={zoomed.src} alt={zoomed.caption || ""} onClick={(event) => event.stopPropagation()} />
+          </div>
+        </Portal>
+      )}
     </section>
   );
 }
@@ -226,11 +252,13 @@ function LoveChapter() {
         <Sticker src="/img/photo-02.png" style={{ bottom: "-16px", left: "-20px" }} startX={-42} startY={30} startRot={-24} rot={8} delay={140} />
         <Sticker src="/img/photo-03.png" style={{ top: "40%", left: "-24px" }} startX={-44} startY={0} startRot={-18} rot={5} delay={260} />
 
-        <button type="button" className="loveButton" onClick={handleClick}>
-          {BIRTHDAY.loveButtonLabel}
-        </button>
-        <div className="loveCount">{isInfinite ? BIRTHDAY.loveButtonMax : count}</div>
-        <div className="loveHint">{hintFor(count)}</div>
+        <div className="panelScroll">
+          <button type="button" className="loveButton" onClick={handleClick}>
+            {BIRTHDAY.loveButtonLabel}
+          </button>
+          <div className="loveCount">{isInfinite ? BIRTHDAY.loveButtonMax : count}</div>
+          <div className="loveHint">{hintFor(count)}</div>
+        </div>
       </section>
 
       {hearts.map((heart) =>
@@ -258,18 +286,20 @@ function LoveChapter() {
       {burstLayer}
 
       {celebrating && (
-        <div className="modalOverlay" onClick={() => setCelebrating(false)}>
-          <div className="modalCard climaxCard" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="modalClose" onClick={() => setCelebrating(false)} aria-label="Закрыть">
-              ×
-            </button>
-            <div className="climaxFrame">
-              <img src={KISS_GIF} alt="" aria-hidden="true" />
+        <Portal>
+          <div className="modalOverlay" onClick={() => setCelebrating(false)}>
+            <div className="modalCard climaxCard" onClick={(event) => event.stopPropagation()}>
+              <button type="button" className="modalClose" onClick={() => setCelebrating(false)} aria-label="Закрыть">
+                ×
+              </button>
+              <div className="climaxFrame">
+                <img src={KISS_GIF} alt="" aria-hidden="true" />
+              </div>
+              <h3 className="climaxTitle">{BIRTHDAY.loveClimaxTitle}</h3>
+              <p className="climaxText">{BIRTHDAY.loveClimaxText}</p>
             </div>
-            <h3 className="climaxTitle">{BIRTHDAY.loveClimaxTitle}</h3>
-            <p className="climaxText">{BIRTHDAY.loveClimaxText}</p>
           </div>
-        </div>
+        </Portal>
       )}
     </>
   );
@@ -285,53 +315,55 @@ function DinnerChapter() {
       <Sticker src="/img/photo-06.png" style={{ bottom: "-16px", right: "-20px" }} startX={42} startY={30} startRot={22} rot={7} delay={120} />
       <Sticker src="/img/photo-07.png" style={{ top: "42%", right: "-24px" }} startX={44} startY={0} startRot={18} rot={-5} delay={220} />
 
-      <Bouncy as="span" className="dinnerIcon" spawnHearts>🍽️</Bouncy>
-      <Bouncy as="h2" className="sectionTitle" spawnHearts>
-        {dinner.title}
-      </Bouncy>
-
-      <div className="dinnerBadgeWrap">
-        <Bouncy as="span" className="dinnerBadge">
-          {dinner.ready ? "детали готовы" : "скоро объявим"}
+      <div className="panelScroll">
+        <Bouncy as="span" className="dinnerIcon" spawnHearts>🍽️</Bouncy>
+        <Bouncy as="h2" className="sectionTitle" spawnHearts>
+          {dinner.title}
         </Bouncy>
-      </div>
 
-      <p className="bodyText">{dinner.teaserText}</p>
-
-      {dinner.ready && (
-        <div className="dinnerDetails">
-          {dinner.restaurantName && (
-            <div className="dinnerRow">
-              <span className="dinnerRowLabel">Место</span>
-              <span className="dinnerRowValue">{dinner.restaurantName}</span>
-            </div>
-          )}
-          {dinner.dateText && (
-            <div className="dinnerRow">
-              <span className="dinnerRowLabel">Когда</span>
-              <span className="dinnerRowValue">{dinner.dateText}</span>
-            </div>
-          )}
-          {dinner.address && (
-            <div className="dinnerRow">
-              <span className="dinnerRowLabel">Адрес</span>
-              <span className="dinnerRowValue">{dinner.address}</span>
-            </div>
-          )}
+        <div className="dinnerBadgeWrap">
+          <Bouncy as="span" className="dinnerBadge">
+            {dinner.ready ? "детали готовы" : "скоро объявим"}
+          </Bouncy>
         </div>
-      )}
 
-      {!dinner.ready && dinner.note && <p className="dinnerNote">{dinner.note}</p>}
+        <p className="bodyText">{dinner.teaserText}</p>
 
-      <a
-        className={`mapButton ${hasLink ? "" : "isDisabled"}`}
-        href={hasLink ? dinner.mapLink : undefined}
-        target="_blank"
-        rel="noreferrer"
-        aria-disabled={!hasLink}
-      >
-        {hasLink ? "Посмотреть на карте" : "Ссылка появится позже"}
-      </a>
+        {dinner.ready && (
+          <div className="dinnerDetails">
+            {dinner.restaurantName && (
+              <div className="dinnerRow">
+                <span className="dinnerRowLabel">Место</span>
+                <span className="dinnerRowValue">{dinner.restaurantName}</span>
+              </div>
+            )}
+            {dinner.dateText && (
+              <div className="dinnerRow">
+                <span className="dinnerRowLabel">Когда</span>
+                <span className="dinnerRowValue">{dinner.dateText}</span>
+              </div>
+            )}
+            {dinner.address && (
+              <div className="dinnerRow">
+                <span className="dinnerRowLabel">Адрес</span>
+                <span className="dinnerRowValue">{dinner.address}</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {!dinner.ready && dinner.note && <p className="dinnerNote">{dinner.note}</p>}
+
+        <a
+          className={`mapButton ${hasLink ? "" : "isDisabled"}`}
+          href={hasLink ? dinner.mapLink : undefined}
+          target="_blank"
+          rel="noreferrer"
+          aria-disabled={!hasLink}
+        >
+          {hasLink ? "Посмотреть на карте" : "Ссылка появится позже"}
+        </a>
+      </div>
     </section>
   );
 }
@@ -346,15 +378,17 @@ function SecretHeart() {
       </button>
 
       {open && (
-        <div className="modalOverlay" onClick={() => setOpen(false)}>
-          <div className="modalCard secretCard" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="modalClose" onClick={() => setOpen(false)} aria-label="Закрыть">
-              ×
-            </button>
-            <div className="secretGlyph" aria-hidden="true">🤫</div>
-            <p className="secretText">{BIRTHDAY.secretMessage}</p>
+        <Portal>
+          <div className="modalOverlay" onClick={() => setOpen(false)}>
+            <div className="modalCard secretCard" onClick={(event) => event.stopPropagation()}>
+              <button type="button" className="modalClose" onClick={() => setOpen(false)} aria-label="Закрыть">
+                ×
+              </button>
+              <div className="secretGlyph" aria-hidden="true">🤫</div>
+              <p className="secretText">{BIRTHDAY.secretMessage}</p>
+            </div>
           </div>
-        </div>
+        </Portal>
       )}
     </>
   );
@@ -363,20 +397,22 @@ function SecretHeart() {
 function FooterChapter({ onRestart }) {
   return (
     <section className="card chapterPanel footer">
-      <div className="footerSignature">
-        {BIRTHDAY.footerSignature}, {BIRTHDAY.fromName}
+      <div className="panelScroll">
+        <div className="footerSignature">
+          {BIRTHDAY.footerSignature}, {BIRTHDAY.fromName}
+        </div>
+        <div className="footerRow">
+          <Bouncy as="img" src="/img/photo-08.png" alt="" className="footerCritter" spawnHearts />
+          <Bouncy as="button" type="button" className="footerHeartBig" spawnHearts aria-label="сердечко">
+            {BIRTHDAY.footerHeart}
+          </Bouncy>
+          <Bouncy as="img" src="/img/photo-09.png" alt="" className="footerCritter" spawnHearts />
+        </div>
+        <SecretHeart />
+        <button type="button" className="restartLink" onClick={onRestart}>
+          ↺ начать сначала
+        </button>
       </div>
-      <div className="footerRow">
-        <Bouncy as="img" src="/img/photo-08.png" alt="" className="footerCritter" spawnHearts />
-        <Bouncy as="button" type="button" className="footerHeartBig" spawnHearts aria-label="сердечко">
-          {BIRTHDAY.footerHeart}
-        </Bouncy>
-        <Bouncy as="img" src="/img/photo-09.png" alt="" className="footerCritter" spawnHearts />
-      </div>
-      <SecretHeart />
-      <button type="button" className="restartLink" onClick={onRestart}>
-        ↺ начать сначала
-      </button>
     </section>
   );
 }

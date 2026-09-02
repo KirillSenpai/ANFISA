@@ -2,11 +2,16 @@
 
 import { useContext, useEffect, useRef, useState } from "react";
 
-import { GameShell, KissContext } from "../shared";
+import { GameShell, KISS_REGULAR, KISS_SPECIAL, KissContext } from "../shared";
 
-const FALLING = ["♥", "💗", "💋", "😘", "💕"];
 const TARGET_SCORE = 8;
-const SPAWN_MS = 750;
+const SPAWN_MS = 700;
+
+function randomFalling() {
+  const isKiss = Math.random() < 0.6;
+  const pool = isKiss ? KISS_SPECIAL : KISS_REGULAR;
+  return { good: isKiss, glyph: pool[Math.floor(Math.random() * pool.length)] };
+}
 
 export default function CatchGame({ onComplete }) {
   const [items, setItems] = useState([]);
@@ -27,7 +32,7 @@ export default function CatchGame({ onComplete }) {
         x: 8 + Math.random() * 84,
         y: -8,
         speed: 0.55 + Math.random() * 0.5,
-        glyph: FALLING[Math.floor(Math.random() * FALLING.length)]
+        ...randomFalling()
       };
       itemsRef.current = [...itemsRef.current, next];
       setItems(itemsRef.current);
@@ -40,8 +45,9 @@ export default function CatchGame({ onComplete }) {
     let last = performance.now();
 
     function tick(now) {
-      const dt = now - last;
+      const dt = Math.min(48, now - last || 16.67);
       last = now;
+      const step = dt / 16.67;
 
       const field = fieldRef.current;
       const basketNode = field ? field.querySelector(".catchBasket") : null;
@@ -49,10 +55,11 @@ export default function CatchGame({ onComplete }) {
       const fieldRect = field ? field.getBoundingClientRect() : null;
 
       const remaining = [];
-      let caughtAny = false;
+      let scoreDelta = 0;
+      let lastCatchPos = null;
 
       for (const item of itemsRef.current) {
-        const y = item.y + item.speed * (dt / 16);
+        const y = item.y + item.speed * step;
         let caught = false;
 
         if (basketRect && fieldRect) {
@@ -65,9 +72,8 @@ export default function CatchGame({ onComplete }) {
             itemLeftPx < basketRect.right + 4;
 
           if (caught) {
-            caughtAny = true;
-            scoreRef.current += 1;
-            spawnKiss(itemLeftPx, itemTopPx);
+            scoreDelta += item.good ? 1 : -1;
+            lastCatchPos = { x: itemLeftPx, y: itemTopPx };
           }
         }
 
@@ -76,7 +82,12 @@ export default function CatchGame({ onComplete }) {
 
       itemsRef.current = remaining;
       setItems(remaining);
-      if (caughtAny) setScore(scoreRef.current);
+
+      if (scoreDelta !== 0) {
+        scoreRef.current = Math.max(0, scoreRef.current + scoreDelta);
+        setScore(scoreRef.current);
+        if (lastCatchPos) spawnKiss(lastCatchPos.x, lastCatchPos.y);
+      }
 
       rafRef.current = requestAnimationFrame(tick);
     }
@@ -99,7 +110,7 @@ export default function CatchGame({ onComplete }) {
   return (
     <GameShell
       title="Поймай поцелуйчики"
-      subtitle="Веди корзинку пальцем и лови всё, что летит сверху"
+      subtitle="Лови только 💋 и 😘 — обычные сердечки роняют счёт"
       onSkip={onComplete}
     >
       <div className="gameHud">
@@ -117,7 +128,7 @@ export default function CatchGame({ onComplete }) {
         {items.map((item) => (
           <span
             key={item.id}
-            className="catchItem"
+            className={`catchItem ${item.good ? "isGood" : "isBad"}`}
             style={{ left: `${item.x}%`, top: `${item.y}%` }}
           >
             {item.glyph}
@@ -131,7 +142,7 @@ export default function CatchGame({ onComplete }) {
 
       {won && (
         <div className="gameWinBanner">
-          <p>Поймала всё! Умница 💗</p>
+          <p>Поймала всё нужное! Умница 💗</p>
           <button type="button" className="stepperNext" onClick={onComplete}>
             Дальше →
           </button>

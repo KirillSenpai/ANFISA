@@ -16,7 +16,10 @@
   --font-script: var(--font-script), "Brush Script MT", cursive;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 html,body{
   min-height:100%;
   width:100%;
@@ -39,6 +42,7 @@ body{
 .page{
   position:relative;
   min-height:100vh;
+  min-height:100dvh;
   width:100%;
   max-width:100%;
   overflow-x:clip;
@@ -171,11 +175,12 @@ body{
   z-index:1;
   max-width:900px;
   min-height:100vh;
+  min-height:100dvh;
   margin:0 auto;
   padding:
-    max(28px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-top))
     max(16px, env(safe-area-inset-right))
-    max(64px, env(safe-area-inset-bottom))
+    max(28px, env(safe-area-inset-bottom))
     max(16px, env(safe-area-inset-left));
   width:100%;
   display:flex;
@@ -240,9 +245,16 @@ body{
   to{ opacity:1; }
 }
 
-.chapterPanel{
-  max-height:min(640px, calc(100vh - 210px));
+/*
+  A chapter panel (.card.chapterPanel) never clips or scrolls itself -- stickers
+  are positioned relative to it and need to hang freely over its edges. Only the
+  .panelScroll wrapper inside it (the actual text/content) scrolls vertically,
+  so peeking stickers never trigger a stray horizontal/vertical scrollbar.
+*/
+.panelScroll{
+  max-height:min(calc(100vh - 200px), calc(100dvh - 200px), 600px);
   overflow-y:auto;
+  overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
 }
 
@@ -544,6 +556,40 @@ body{
   }
 }
 
+.collageZoomOverlay{
+  position:fixed;
+  inset:0;
+  z-index:65;
+  background:rgba(20,10,16,.82);
+  display:grid;
+  place-items:center;
+  padding:18px;
+  animation:fadeIn .2s ease;
+}
+
+.collageZoomOverlay img{
+  max-width:94vw;
+  max-height:88dvh;
+  object-fit:contain;
+  border-radius:18px;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);
+}
+
+.collageZoomClose{
+  position:fixed;
+  top:max(18px, env(safe-area-inset-top));
+  right:max(18px, env(safe-area-inset-right));
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:none;
+  background:rgba(255,255,255,.92);
+  color:var(--pink-deep);
+  font-size:20px;
+  cursor:pointer;
+  z-index:1;
+}
+
 /* ---------- modal ---------- */
 
 .modalOverlay{
@@ -554,6 +600,7 @@ body{
   display:grid;
   place-items:center;
   padding:24px;
+  overflow-y:auto;
   animation:fadeIn .25s ease;
 }
 
@@ -566,8 +613,11 @@ body{
   padding:20px;
   max-width:420px;
   width:100%;
+  max-height:min(85vh, 85dvh);
+  overflow-y:auto;
   box-shadow:0 30px 80px rgba(0,0,0,.35);
   text-align:center;
+  margin:auto;
 }
 
 .modalCard img{
@@ -824,13 +874,23 @@ body{
 
 .gamePanel{
   text-align:center;
+  padding-top:26px;
+  padding-bottom:22px;
+}
+
+.gamePanel .sectionTitle{
+  margin-bottom:2px;
+}
+
+.gamePanel .sectionSubtitle{
+  margin-bottom:14px;
 }
 
 .gameHud{
   display:flex;
   justify-content:center;
   gap:18px;
-  margin:0 0 18px;
+  margin:0 0 12px;
   font-size:14px;
   color:var(--ink-soft);
 }
@@ -843,7 +903,7 @@ body{
 
 .gameSkip{
   display:inline-block;
-  margin-top:20px;
+  margin-top:14px;
   border:none;
   background:none;
   color:var(--ink-soft);
@@ -874,7 +934,7 @@ body{
 
 .catchField{
   position:relative;
-  height:300px;
+  height:min(260px, 34dvh);
   border-radius:20px;
   background:linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,214,231,.4));
   border:1px solid var(--line);
@@ -969,8 +1029,8 @@ body{
 .match3Grid{
   display:grid;
   grid-template-columns:repeat(6, minmax(0,1fr));
-  gap:6px;
-  max-width:360px;
+  gap:5px;
+  max-width:300px;
   margin:0 auto;
 }
 
@@ -996,17 +1056,46 @@ body{
   animation:match3Shake .3s ease;
 }
 
+.match3Cell.isSwapping{
+  animation:match3Swap .25s ease;
+}
+
+.match3Cell.isMatched{
+  animation:match3Pop .32s ease forwards;
+  background:rgba(255,182,201,.5);
+}
+
+.match3Cell.isFresh{
+  animation:match3FallIn .3s cubic-bezier(.34,1.56,.64,1) both;
+}
+
 @keyframes match3Shake{
   0%,100%{ transform:translateX(0); }
   25%{ transform:translateX(-4px); }
   75%{ transform:translateX(4px); }
 }
 
+@keyframes match3Swap{
+  0%,100%{ transform:scale(1); }
+  50%{ transform:scale(1.18) rotate(6deg); }
+}
+
+@keyframes match3Pop{
+  0%{ transform:scale(1); opacity:1; }
+  50%{ transform:scale(1.35); opacity:1; }
+  100%{ transform:scale(.2); opacity:0; }
+}
+
+@keyframes match3FallIn{
+  0%{ transform:translateY(-16px) scale(.4); opacity:0; }
+  100%{ transform:translateY(0) scale(1); opacity:1; }
+}
+
 /* flappy game */
 
 .flappyField{
   position:relative;
-  max-width:320px;
+  max-width:min(320px, 78vw);
   margin:0 auto;
   border-radius:20px;
   overflow:hidden;

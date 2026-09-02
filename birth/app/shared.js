@@ -1,6 +1,21 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+
+/**
+ * Renders children straight into document.body. Safari has a long-standing bug
+ * where a position:fixed element nested inside a -webkit-overflow-scrolling:touch
+ * container (our .panelScroll) gets trapped relative to that container instead of
+ * the viewport, shrinking to its size. Every modal/overlay must portal out of any
+ * scrollable ancestor to render correctly full-screen on iOS.
+ */
+export function Portal({ children }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return createPortal(children, document.body);
+}
 
 /** Даёт летящие сердечки/поцелуйчики любому элементу на странице, где бы он ни был. */
 export const KissContext = createContext(() => {});
@@ -222,12 +237,14 @@ export function useKissLayer() {
 export function GameShell({ title, subtitle, onSkip, children }) {
   return (
     <div className="card chapterPanel gamePanel">
-      <h2 className="sectionTitle">{title}</h2>
-      <p className="sectionSubtitle">{subtitle}</p>
-      {children}
-      <button type="button" className="gameSkip" onClick={onSkip}>
-        Пропустить →
-      </button>
+      <div className="panelScroll">
+        <h2 className="sectionTitle">{title}</h2>
+        <p className="sectionSubtitle">{subtitle}</p>
+        {children}
+        <button type="button" className="gameSkip" onClick={onSkip}>
+          Пропустить →
+        </button>
+      </div>
     </div>
   );
 }
