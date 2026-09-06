@@ -35,6 +35,45 @@ function getCountdown(targetDate) {
   };
 }
 
+/**
+ * Замок на входе: пока не наступит BIRTHDAY.gateUnlockDateIso, вместо конверта
+ * показывается только обратный отсчёт — дальше пройти нельзя. Как только время
+ * настанет, компонент сам сообщает об этом наверх через onUnlock.
+ */
+function LockGate({ onUnlock }) {
+  const target = useMemo(() => new Date(BIRTHDAY.gateUnlockDateIso), []);
+  const [countdown, setCountdown] = useState(() => getCountdown(target));
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      const next = getCountdown(target);
+      setCountdown(next);
+      if (target.getTime() <= Date.now()) {
+        window.clearInterval(timer);
+        onUnlock();
+      }
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [target, onUnlock]);
+
+  return (
+    <div className="lockScreen">
+      <div className="lockWrap">
+        <div className="lockIcon" aria-hidden="true">🔒</div>
+        <div className="lockTitle">{BIRTHDAY.gateTitle}</div>
+        <p className="lockText">{BIRTHDAY.gateText}</p>
+        <div className="countdown lockCountdown" aria-label="Обратный отсчёт до открытия">
+          <span><strong>{countdown.days}</strong> дней</span>
+          <span><strong>{countdown.hours}</strong> часов</span>
+          <span><strong>{countdown.minutes}</strong> минут</span>
+          <span><strong>{countdown.seconds}</strong> секунд</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Envelope({ opened, onOpen }) {
   return (
     <div className={`envelopeScreen ${opened ? "isOpen" : ""}`}>
@@ -431,17 +470,27 @@ const CHAPTERS = [
 ];
 
 export default function Page() {
+  // Always starts locked (matches the server-rendered HTML) so there is no
+  // hydration mismatch; the effect below flips it right away on the client
+  // if the unlock date has, in fact, already passed.
+  const [unlocked, setUnlocked] = useState(false);
   const [opened, setOpened] = useState(false);
   const [chapterIndex, setChapterIndex] = useState(0);
   const { burst: burstEnvelope, layer: envelopeBurstLayer } = useHeartBurst();
   const { spawnKiss, layer: kissLayer } = useKissLayer();
 
   useEffect(() => {
-    document.body.style.overflow = opened ? "" : "hidden";
+    if (Date.now() >= new Date(BIRTHDAY.gateUnlockDateIso).getTime()) {
+      setUnlocked(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = unlocked && opened ? "" : "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [opened]);
+  }, [unlocked, opened]);
 
   function handleOpen() {
     setOpened(true);
@@ -463,6 +512,15 @@ export default function Page() {
   const chapter = CHAPTERS[chapterIndex];
   const isLast = chapterIndex === CHAPTERS.length - 1;
   const progress = ((chapterIndex + 1) / CHAPTERS.length) * 100;
+
+  if (!unlocked) {
+    return (
+      <main className="page">
+        <SparkleField />
+        <LockGate onUnlock={() => setUnlocked(true)} />
+      </main>
+    );
+  }
 
   return (
     <main className="page">
