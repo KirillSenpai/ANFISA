@@ -63,8 +63,10 @@ export const BIRTHDAY = {
   footerHeart: "♥"
 };
 
+// Заголовок и описание вкладки/превью ссылки в мессенджерах — нарочно
+// нейтральные, без спойлеров, чтобы не выдать сюрприз до открытия сайта.
 export const SITE_METADATA = {
-  title: `С днём рождения, ${BIRTHDAY.name}!`,
-  description: BIRTHDAY.shortGreeting,
+  title: "Тебе кое-что 💌",
+  description: "Открой и узнаешь",
   metadataBase: "https://example.com"
 };
