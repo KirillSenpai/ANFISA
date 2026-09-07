@@ -213,7 +213,15 @@ function CollageChapter() {
             <button type="button" className="collageZoomClose" onClick={() => setZoomed(null)} aria-label="Закрыть">
               ×
             </button>
-            <img src={zoomed.src} alt={zoomed.caption || ""} onClick={(event) => event.stopPropagation()} />
+            <div className="collageZoomBody" onClick={(event) => event.stopPropagation()}>
+              <img src={zoomed.src} alt={zoomed.caption || ""} />
+              {(zoomed.caption || zoomed.dateLabel) && (
+                <div className="collageZoomCaption">
+                  {zoomed.caption && <div className="collageZoomCaptionText">{zoomed.caption}</div>}
+                  {zoomed.dateLabel && <div className="collageZoomCaptionDate">{zoomed.dateLabel}</div>}
+                </div>
+              )}
+            </div>
           </div>
         </Portal>
       )}
@@ -480,7 +488,11 @@ export default function Page() {
   const { spawnKiss, layer: kissLayer } = useKissLayer();
 
   useEffect(() => {
-    if (Date.now() >= new Date(BIRTHDAY.gateUnlockDateIso).getTime()) {
+    // Local-only bypass for previewing the site during development: set
+    // NEXT_PUBLIC_SKIP_GATE=1 in a .env.local file (gitignored, never
+    // deployed) to always skip the countdown lock on your own machine.
+    const skipGate = process.env.NEXT_PUBLIC_SKIP_GATE === "1";
+    if (skipGate || Date.now() >= new Date(BIRTHDAY.gateUnlockDateIso).getTime()) {
       setUnlocked(true);
     }
   }, []);

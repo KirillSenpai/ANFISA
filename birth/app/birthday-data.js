@@ -33,14 +33,28 @@ export const BIRTHDAY = {
   loveClimaxTitle: "Бесконечно",
   loveClimaxText: "Именно столько раз в день я готов признаваться тебе в любви. С днём рождения, моя малышка.",
 
-  // Скелет коллажа общих фото — пока пусто, покажутся заглушки-рамки.
-  // Как подберёшь фото, добавь сюда объекты { src: "/img/us-01.jpg", caption: "..." }
-  // по порядку, и они займут место заглушек.
+  // Тапнуть по фото — открывается на весь экран. Чтобы добавить ещё —
+  // положи файл в public/img и допиши сюда { src, caption, dateLabel }.
   collage: {
     title: "Наши моменты",
-    subtitle: "здесь скоро появятся наши фотографии",
-    slots: 6,
-    photos: []
+    subtitle: "тапни на фото, чтобы рассмотреть",
+    slots: 14,
+    photos: [
+      { src: "/img/us-01.jpg", caption: "Одни из первых наших фото вместе", dateLabel: "январь 2018" },
+      { src: "/img/us-02.jpg", caption: "Прогулка весной", dateLabel: "май 2019" },
+      { src: "/img/us-03.jpg", caption: "Городская прогулка" },
+      { src: "/img/us-04.jpg", caption: "Дурачимся, как всегда" },
+      { src: "/img/us-05.jpg", caption: "Столько разных настроений в одном человеке", dateLabel: "январь 2020" },
+      { src: "/img/us-06.jpg", caption: "Золотой час тебе к лицу" },
+      { src: "/img/us-07.jpg", caption: "Домашний уют" },
+      { src: "/img/us-08.jpg", caption: "Собралась куда-то — и как всегда прекрасна" },
+      { src: "/img/us-09.jpg", caption: "Прогулка в заповеднике", dateLabel: "март 2025" },
+      { src: "/img/us-10.jpg", caption: "Тихий вечер на балконе", dateLabel: "октябрь 2025" },
+      { src: "/img/us-11.jpg", caption: "После спа — самое смешное лицо", dateLabel: "октябрь 2025" },
+      { src: "/img/us-12.jpg", caption: "Тот самый мем", dateLabel: "январь 2026" },
+      { src: "/img/us-13.jpg", caption: "Обычное утро, необычная красота", dateLabel: "январь 2026" },
+      { src: "/img/us-14.jpg", caption: "Втроём с пушистым другом", dateLabel: "май 2026" }
+    ]
   },
 
   secretMessage:
