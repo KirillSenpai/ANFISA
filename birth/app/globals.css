@@ -851,100 +851,154 @@ body{
   color:var(--ink);
 }
 
-/* ---------- dinner card ---------- */
+/* ---------- dinner ticket ---------- */
 
 .dinnerCard{
-  background:linear-gradient(165deg, #fff 0%, #fff0f5 100%);
-  border:1.5px dashed var(--pink-2);
+  --ticket-surface:#fff6fa;
+  background:var(--ticket-surface);
 }
 
-.dinnerIcon{
+.ticket{
   display:block;
-  margin:0 auto 12px;
-  font-size:38px;
-  text-align:center;
+  width:min(100%, 300px);
+  margin:4px auto 0;
+  padding:0;
+  border:none;
   background:none;
-  border:none;
-  transition:transform .15s ease;
-}
-
-.dinnerBadge{
-  display:inline-block;
-  margin:0 auto 14px;
-  padding:6px 16px;
-  border-radius:999px;
-  border:none;
-  background:rgba(255,143,171,.18);
-  color:var(--pink-deep);
   font:inherit;
-  font-size:12px;
+  text-align:center;
+  cursor:pointer;
+  filter:drop-shadow(0 16px 26px rgba(196,64,120,.28));
+  transform:rotate(-2deg);
+  animation:ticketFloat 4.5s ease-in-out infinite;
+}
+
+.ticket:active{
+  animation:none;
+  transform:rotate(0deg) scale(.97);
+}
+
+@keyframes ticketFloat{
+  0%,100%{ transform:rotate(-2deg) translateY(0); }
+  50%{ transform:rotate(1deg) translateY(-6px); }
+}
+
+.ticketMain{
+  padding:20px 20px 18px;
+  border-radius:20px 20px 6px 6px;
+  background:
+    radial-gradient(160px 90px at 85% 0%, rgba(255,255,255,.35), transparent 70%),
+    linear-gradient(160deg, var(--pink-2), var(--pink-3));
+  color:#fff;
+}
+
+.ticketKicker{
+  font-size:11px;
   font-weight:800;
+  letter-spacing:.18em;
   text-transform:uppercase;
-  letter-spacing:.08em;
+  opacity:.9;
 }
 
-.dinnerBadgeWrap{ text-align:center; }
+.ticketIcon{
+  margin:8px 0 2px;
+  font-size:34px;
+  line-height:1;
+}
 
-.dinnerDetails{
-  margin-top:22px;
+.ticketAdmits{
+  font-family:var(--font-script);
+  font-size:clamp(28px, 7vw, 34px);
+  line-height:1.1;
+}
+
+.ticketRows{
   display:grid;
-  gap:12px;
-  max-width:420px;
-  margin-left:auto;
-  margin-right:auto;
+  gap:6px;
+  margin-top:14px;
 }
 
-.dinnerRow{
+.ticketRow,
+.ticketStubRow{
   display:flex;
   justify-content:space-between;
+  align-items:baseline;
   gap:12px;
-  padding:14px 16px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:rgba(255,255,255,.6);
-  font-size:15px;
+  font-size:13px;
 }
 
-.dinnerRowLabel{
-  color:var(--ink-soft);
+.ticketRow span,
+.ticketStubRow span{
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-size:11px;
+  opacity:.8;
+}
+
+.ticketRow strong{
   font-weight:700;
 }
 
-.dinnerRowValue{
+/* Perforated tear-off stub: dashed line plus two round "bites"
+   the colour of the card surface, like a real paper ticket. */
+.ticketStub{
+  position:relative;
+  padding:18px 20px 16px;
+  border-top:2px dashed rgba(244,85,127,.45);
+  border-radius:6px 6px 20px 20px;
+  background:#ffe6ef;
   color:var(--ink);
-  text-align:right;
 }
 
-.dinnerNote{
-  margin-top:18px;
+.ticketStub::before,
+.ticketStub::after{
+  content:"";
+  position:absolute;
+  top:-12px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:var(--ticket-surface);
+}
+
+.ticketStub::before{ left:-11px; }
+.ticketStub::after{ right:-11px; }
+
+.ticketStubRow strong{
+  font-family:var(--font-script);
+  font-size:22px;
+  color:var(--pink-deep);
+}
+
+.ticketBarcode{
+  height:30px;
+  margin:12px auto 4px;
+  width:80%;
+  background:repeating-linear-gradient(
+    90deg,
+    var(--ink) 0 2px,
+    transparent 2px 4px,
+    var(--ink) 4px 5px,
+    transparent 5px 8px,
+    var(--ink) 8px 11px,
+    transparent 11px 13px
+  );
+  opacity:.75;
+  border-radius:2px;
+}
+
+.ticketCode{
+  font-size:11px;
+  letter-spacing:.2em;
+  color:var(--ink-soft);
+}
+
+.ticketHint{
+  margin:22px auto 0;
+  max-width:30ch;
   text-align:center;
   font-size:14px;
   color:var(--ink-soft);
-  font-style:italic;
-}
-
-.mapButton{
-  display:block;
-  width:min(100%, 320px);
-  margin:22px auto 0;
-  padding:15px 18px;
-  text-align:center;
-  border-radius:999px;
-  background:var(--pink-3);
-  color:#fff;
-  text-decoration:none;
-  font-weight:700;
-  box-shadow:0 14px 30px rgba(196,64,120,.28);
-  transition:transform .2s ease;
-}
-
-.mapButton:hover{ transform:translateY(-2px); }
-
-.mapButton.isDisabled{
-  pointer-events:none;
-  background:#e9d3dc;
-  color:#a98499;
-  box-shadow:none;
 }
 
 /* ---------- mini games ---------- */
@@ -1290,12 +1344,11 @@ body{
 
 @media (max-width:640px){
   .card{ padding:28px 20px; }
-  .dinnerRow{ flex-direction:column; gap:4px; }
-  .dinnerRowValue{ text-align:left; }
 }
 
 @media (prefers-reduced-motion: reduce){
   .envelope,
+  .ticket,
   .footerHeartBig,
   .sparkle,
   .heartBurstItem,

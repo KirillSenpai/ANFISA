@@ -42,20 +42,30 @@ function getCountdown(targetDate) {
  */
 function LockGate({ onUnlock }) {
   const target = useMemo(() => new Date(BIRTHDAY.gateUnlockDateIso), []);
-  const [countdown, setCountdown] = useState(() => getCountdown(target));
+  // The page is prerendered at build time, so the countdown must not be
+  // computed during render: build-time numbers would never match the
+  // visitor's clock and hydration would fail. Filled in on the client only.
+  const [countdown, setCountdown] = useState(null);
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      const next = getCountdown(target);
-      setCountdown(next);
+    function tick() {
+      setCountdown(getCountdown(target));
       if (target.getTime() <= Date.now()) {
-        window.clearInterval(timer);
         onUnlock();
+        return true;
       }
+      return false;
+    }
+
+    if (tick()) return undefined;
+    const timer = window.setInterval(() => {
+      if (tick()) window.clearInterval(timer);
     }, 1000);
 
     return () => window.clearInterval(timer);
   }, [target, onUnlock]);
+
+  const show = (value) => (countdown ? countdown[value] : "–");
 
   return (
     <div className="lockScreen">
@@ -64,10 +74,10 @@ function LockGate({ onUnlock }) {
         <div className="lockTitle">{BIRTHDAY.gateTitle}</div>
         <p className="lockText">{BIRTHDAY.gateText}</p>
         <div className="countdown lockCountdown" aria-label="Обратный отсчёт до открытия">
-          <span><strong>{countdown.days}</strong> дней</span>
-          <span><strong>{countdown.hours}</strong> часов</span>
-          <span><strong>{countdown.minutes}</strong> минут</span>
-          <span><strong>{countdown.seconds}</strong> секунд</span>
+          <span><strong>{show("days")}</strong> дней</span>
+          <span><strong>{show("hours")}</strong> часов</span>
+          <span><strong>{show("minutes")}</strong> минут</span>
+          <span><strong>{show("seconds")}</strong> секунд</span>
         </div>
       </div>
     </div>
@@ -354,62 +364,56 @@ function LoveChapter() {
 
 function DinnerChapter() {
   const dinner = BIRTHDAY.dinner;
-  const hasLink = Boolean(dinner.mapLink);
+  const spawnKiss = useContext(KissContext);
 
   return (
     <section className="card chapterPanel dinnerCard">
       <Sticker src="/img/photo-05.png" style={{ top: "-20px", left: "-20px" }} startX={-42} startY={-30} startRot={-24} rot={-8} />
       <Sticker src="/img/photo-06.png" style={{ bottom: "-16px", right: "-20px" }} startX={42} startY={30} startRot={22} rot={7} delay={120} />
-      <Sticker src="/img/photo-07.png" style={{ top: "42%", right: "-24px" }} startX={44} startY={0} startRot={18} rot={-5} delay={220} />
 
       <div className="panelScroll">
-        <Bouncy as="span" className="dinnerIcon" spawnHearts>🍽️</Bouncy>
         <Bouncy as="h2" className="sectionTitle" spawnHearts>
           {dinner.title}
         </Bouncy>
+        <p className="sectionSubtitle">{dinner.teaserText}</p>
 
-        <div className="dinnerBadgeWrap">
-          <Bouncy as="span" className="dinnerBadge">
-            {dinner.ready ? "детали готовы" : "скоро объявим"}
-          </Bouncy>
-        </div>
-
-        <p className="bodyText">{dinner.teaserText}</p>
-
-        {dinner.ready && (
-          <div className="dinnerDetails">
-            {dinner.restaurantName && (
-              <div className="dinnerRow">
-                <span className="dinnerRowLabel">Место</span>
-                <span className="dinnerRowValue">{dinner.restaurantName}</span>
-              </div>
-            )}
-            {dinner.dateText && (
-              <div className="dinnerRow">
-                <span className="dinnerRowLabel">Когда</span>
-                <span className="dinnerRowValue">{dinner.dateText}</span>
-              </div>
-            )}
-            {dinner.address && (
-              <div className="dinnerRow">
-                <span className="dinnerRowLabel">Адрес</span>
-                <span className="dinnerRowValue">{dinner.address}</span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {!dinner.ready && dinner.note && <p className="dinnerNote">{dinner.note}</p>}
-
-        <a
-          className={`mapButton ${hasLink ? "" : "isDisabled"}`}
-          href={hasLink ? dinner.mapLink : undefined}
-          target="_blank"
-          rel="noreferrer"
-          aria-disabled={!hasLink}
+        <button
+          type="button"
+          className="ticket"
+          onClick={(event) => spawnKiss(event.clientX, event.clientY)}
+          aria-label={`${dinner.kicker}: ${dinner.admits}`}
         >
-          {hasLink ? "Посмотреть на карте" : "Ссылка появится позже"}
-        </a>
+          <div className="ticketMain">
+            <div className="ticketKicker">{dinner.kicker}</div>
+            <div className="ticketIcon" aria-hidden="true">🍽️</div>
+            <div className="ticketAdmits">{dinner.admits}</div>
+            <div className="ticketRows">
+              <div className="ticketRow">
+                <span>место</span>
+                <strong>{dinner.place}</strong>
+              </div>
+              <div className="ticketRow">
+                <span>срок</span>
+                <strong>{dinner.validity}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div className="ticketStub">
+            <div className="ticketStubRow">
+              <span>для</span>
+              <strong>{dinner.holder}</strong>
+            </div>
+            <div className="ticketStubRow">
+              <span>от</span>
+              <strong>{dinner.issuer}</strong>
+            </div>
+            <div className="ticketBarcode" aria-hidden="true" />
+            <div className="ticketCode">{dinner.code}</div>
+          </div>
+        </button>
+
+        <p className="ticketHint">{dinner.hint}</p>
       </div>
     </section>
   );
