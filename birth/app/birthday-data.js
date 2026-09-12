@@ -38,7 +38,7 @@ export const BIRTHDAY = {
   collage: {
     title: "Наши моменты",
     subtitle: "тапни на фото, чтобы рассмотреть",
-    slots: 14,
+    slots: 12,
     photos: [
       { src: "/img/us-01.jpg", caption: "Одни из первых наших фото вместе 💕🥰", dateLabel: "январь 2018" },
       { src: "/img/us-02.jpg", caption: "Уже тогда самая красивая на свете 🌸😍", dateLabel: "май 2019" },
@@ -49,9 +49,7 @@ export const BIRTHDAY = {
       { src: "/img/us-07.jpg", caption: "Одно из первых фото, что ты мне прислала — с этого всё началось 💌🥹" },
       { src: "/img/us-08.jpg", caption: "Самая красивая на этом празднике 🎉💕" },
       { src: "/img/us-09.jpg", caption: "Наша совушка нашла себе дупло 🦉🍂", dateLabel: "март 2025" },
-      { src: "/img/us-10.jpg", caption: "😂😅🙈", dateLabel: "октябрь 2025" },
       { src: "/img/us-11.jpg", caption: "После тёплых терм — самое смешное лицо 😂♨️", dateLabel: "октябрь 2025" },
-      { src: "/img/us-12.jpg", caption: "😂🤣💀", dateLabel: "январь 2026" },
       { src: "/img/us-13.jpg", caption: "Обычное утро, необычная красота ☀️😍", dateLabel: "январь 2026" },
       { src: "/img/us-14.jpg", caption: "Наш песель Изуми 🐾💛", dateLabel: "май 2026" }
     ]
