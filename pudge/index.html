@@ -26,11 +26,10 @@ h1{margin:10px 0 4px;font-size:clamp(40px,11vw,84px);line-height:1;text-transfor
 .frame:before,.frame:after{content:"◆";position:absolute;top:-11px;color:var(--gold);font-size:16px;background:var(--bg);padding:0 4px}
 .frame:before{left:14px}.frame:after{right:14px}
 .stage{margin:22px auto;padding:10px 0 0;height:340px;overflow:hidden;cursor:pointer;user-select:none;touch-action:manipulation}
-#pudge{width:260px;height:300px;display:block;margin:0 auto;transition:transform .15s;animation:idle 2.4s ease-in-out infinite}
+#pudge{height:310px;width:auto;max-width:90%;display:block;margin:0 auto;filter:drop-shadow(0 8px 14px #000);pointer-events:none;transition:transform .15s;animation:idle 2.4s ease-in-out infinite}
 @keyframes idle{50%{transform:translateY(-6px) rotate(-1.5deg)}}
 .stage.hit #pudge{animation:none;transform:scale(1.08) rotate(3deg)}
-#hookLine{stroke:#9b9b9b;stroke-width:3;stroke-dasharray:6 3}
-.hook{position:absolute;font-size:34px;pointer-events:none;animation:fly .7s ease-out forwards}
+.hook{position:absolute;width:70px;pointer-events:none;animation:fly .7s ease-out forwards}
 @keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
 .hint{font-size:13px;color:#9c8f78;margin:0 0 10px}
 .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0}
@@ -70,7 +69,7 @@ footer{margin-top:40px;color:#7c705c;font-size:13px}
 .tg.ally small{color:#6fd36f}
 .pop{position:absolute;font-size:22px;font-weight:bold;pointer-events:none;animation:up .7s forwards}
 @keyframes up{to{transform:translateY(-40px);opacity:0}}
-.catcher{position:absolute;bottom:2px;font-size:54px;line-height:1;transform:translateX(-50%)}
+.catcher{position:absolute;bottom:0;width:64px;transform:translateX(-50%);filter:drop-shadow(0 3px 4px #000)}
 .fall{position:absolute;font-size:30px;line-height:1}
 .overlay{position:absolute;inset:0;display:grid;place-items:center;background:rgba(5,2,3,.82);z-index:5;padding:14px}
 .overlay .box b{display:block;font-size:22px;color:var(--gold2);margin-bottom:6px}
@@ -81,6 +80,7 @@ footer{margin-top:40px;color:#7c705c;font-size:13px}
 .q button.ok{background:linear-gradient(#245c16,#0f2a09)}
 .q button.bad{background:linear-gradient(#7a1015,#2a0709)}
 .rank{font-size:26px;color:var(--gold2);margin:6px 0}
+.deco{display:block;margin:0 auto 12px;max-width:80%;filter:drop-shadow(0 6px 12px #000)}
 .rune{font-size:64px;display:inline-block;animation:idle 2s infinite}
 #runeText{min-height:60px;font-size:17px;margin:10px 0;color:var(--gold2)}
 </style>
@@ -94,36 +94,7 @@ footer{margin-top:40px;color:#7c705c;font-size:13px}
   <div class="sub" id="sub">«Fresh meat!»</div>
 
   <div class="frame stage" id="stage">
-    <svg id="pudge" viewBox="0 0 260 300" aria-label="Pudge">
-      <defs>
-        <radialGradient id="skin" cx="50%" cy="35%"><stop offset="0" stop-color="#9ac75a"/><stop offset="1" stop-color="#4e7a22"/></radialGradient>
-        <radialGradient id="belly" cx="50%" cy="40%"><stop offset="0" stop-color="#c7a96b"/><stop offset="1" stop-color="#7d6232"/></radialGradient>
-      </defs>
-      <ellipse cx="130" cy="285" rx="95" ry="12" fill="#000" opacity=".6"/>
-      <!-- legs -->
-      <rect x="82" y="225" width="38" height="52" rx="12" fill="#3a5c18"/><rect x="140" y="225" width="38" height="52" rx="12" fill="#3a5c18"/>
-      <rect x="76" y="268" width="50" height="14" rx="6" fill="#2a1a10"/><rect x="134" y="268" width="50" height="14" rx="6" fill="#2a1a10"/>
-      <!-- body -->
-      <ellipse cx="130" cy="180" rx="88" ry="78" fill="url(#skin)" stroke="#2c4a10" stroke-width="3"/>
-      <ellipse cx="130" cy="195" rx="62" ry="52" fill="url(#belly)" stroke="#4d3b1b" stroke-width="2"/>
-      <path d="M92 185h76M96 205h68M100 222h60" stroke="#5b4522" stroke-width="2" fill="none"/>
-      <path d="M70 150q60-30 120 0" stroke="#4a2a14" stroke-width="10" fill="none"/>
-      <!-- arms -->
-      <ellipse cx="48" cy="170" rx="22" ry="34" fill="url(#skin)" stroke="#2c4a10" stroke-width="3"/>
-      <ellipse cx="212" cy="170" rx="22" ry="34" fill="url(#skin)" stroke="#2c4a10" stroke-width="3"/>
-      <!-- cleaver -->
-      <g transform="rotate(-18 212 190)"><rect x="206" y="120" width="12" height="70" fill="#5a3b1e"/><path d="M190 60h46l-4 66h-38z" fill="#b9bcc2" stroke="#444" stroke-width="3"/><path d="M196 70l30 0" stroke="#fff" opacity=".6" stroke-width="3"/><path d="M193 118l5 8 5-8 5 8 5-8 5 8 5-8 5 8" stroke="#7a1a1a" stroke-width="3" fill="none"/></g>
-      <!-- head -->
-      <ellipse cx="130" cy="92" rx="48" ry="44" fill="url(#skin)" stroke="#2c4a10" stroke-width="3"/>
-      <path d="M92 70q38-38 76 0q-38-14-76 0z" fill="#2b2b2b"/>
-      <ellipse cx="112" cy="90" rx="9" ry="7" fill="#fff"/><ellipse cx="150" cy="90" rx="9" ry="7" fill="#fff"/>
-      <circle cx="114" cy="91" r="3.5" fill="#a00"/><circle cx="148" cy="91" r="3.5" fill="#a00"/>
-      <path d="M100 80l22 8M160 80l-22 8" stroke="#1d3309" stroke-width="4"/>
-      <path d="M104 112q26 20 52 0" stroke="#2a0d0d" stroke-width="3" fill="#3a0a0a"/>
-      <path d="M110 112l4 9 5-8 5 9 5-9 5 8 4-9" fill="#e8dcc4"/>
-      <!-- hook line -->
-      <line id="hookLine" x1="48" y1="170" x2="48" y2="170" opacity="0"/>
-    </svg>
+    <img id="pudge" src="img/pudge-hat.webp" alt="Pudge" draggable="false">
   </div>
   <p class="hint">Тапай Пуджа — он кидает хук 🪝 · счёт хуков: <b id="hooks">0</b></p>
   <div class="row">
@@ -133,6 +104,7 @@ footer{margin-top:40px;color:#7c705c;font-size:13px}
 
   <section class="frame panel">
     <h2>Профиль героя</h2>
+    <img class="deco" src="img/pudge-front.webp" alt="" style="height:170px;width:auto">
     <div class="stats">
       <div class="stat"><b id="age">??</b><span>уровень (лет)</span></div>
       <div class="stat"><b>25</b><span>максимальный лвл</span></div>
@@ -143,6 +115,7 @@ footer{margin-top:40px;color:#7c705c;font-size:13px}
 
   <section class="frame panel">
     <h2>Способности</h2>
+    <img class="deco" src="img/pudge-immortal.webp" alt="" style="height:200px;width:auto">
     <div class="skills">
       <div class="skill"><div class="ic">🪝</div><div><h3>Meat Hook</h3><p>Цепляет удачу с любой дистанции. В новом году промахов нет — только точные попадания.</p></div></div>
       <div class="skill"><div class="ic">☣</div><div><h3>Rot</h3><p>Наносит урон всем, кто рядом. Тебе — только немного HP. Зато вокруг всегда есть повод посмеяться.</p></div></div>
@@ -163,6 +136,7 @@ footer{margin-top:40px;color:#7c705c;font-size:13px}
 
     <section class="frame panel game">
     <h2>Игра 1 · Meat Hook</h2>
+    <img class="deco" src="img/pudge-hook.webp" alt="" style="height:90px;width:auto">
     <p class="desc">Хукни вражеских героев за 20 секунд. Союзников не трогай: −3 очка и «Вы поймали своего».</p>
     <div class="hud"><span>Очки: <b id="g1s">0</b></span><span>Время: <b id="g1t">20</b></span><span>Рекорд: <b id="g1b">0</b></span></div>
     <div class="arena" id="a1"><div class="overlay" id="o1"><div class="box"><b>Ready?</b><p>Тапай по героям, чтобы хукнуть.</p><button id="s1">Старт</button></div></div></div>
@@ -172,7 +146,7 @@ footer{margin-top:40px;color:#7c705c;font-size:13px}
     <h2>Игра 2 · Flesh Heap</h2>
     <p class="desc">Двигай Пуджа пальцем или мышью. Лови торты и крипов, а от Бомб Tinker и грибов уворачивайся. 30 секунд, 3 жизни.</p>
     <div class="hud"><span>Очки: <b id="g2s">0</b></span><span>Жизни: <b id="g2l">3</b></span><span>Рекорд: <b id="g2b">0</b></span></div>
-    <div class="arena" id="a2"><div class="catcher" id="cat">🐸</div><div class="overlay" id="o2"><div class="box"><b>Dinner time!</b><p>Пудж голоден. Накорми его.</p><button id="s2">Старт</button></div></div></div>
+    <div class="arena" id="a2"><img class="catcher" id="cat" src="img/pudge-butcher.webp" alt="Pudge" draggable="false"><div class="overlay" id="o2"><div class="box"><b>Dinner time!</b><p>Пудж голоден. Накорми его.</p><button id="s2">Старт</button></div></div></div>
   </section>
 
   <section class="frame panel game q" id="quiz">
@@ -232,7 +206,7 @@ function throwHook(ev) {
   const x = (ev.clientX ?? r.left + r.width/2) - r.left;
   const y = (ev.clientY ?? r.top + r.height/2) - r.top;
   const h = document.createElement('div');
-  h.className = 'hook'; h.textContent = '🪝';
+  h.className = 'hook'; h.innerHTML = '<img src="img/pudge-hook.webp" width="70" alt="">';
   h.style.left = '50%'; h.style.top = '45%';
   h.style.setProperty('--dx', (x - r.width/2) + 'px');
   h.style.setProperty('--dy', (y - r.height*0.45) + 'px');
@@ -364,7 +338,7 @@ function g2loop(t) {
   const cx = parseFloat(cat.style.left), H = a2.clientHeight;
   g2.items = g2.items.filter(it => {
     it.y += it.v * dt; it.el.style.top = it.y + 'px';
-    if (it.y > H - 62 && it.y < H - 14 && Math.abs(it.x + 14 - cx) < 38) {
+    if (it.y > H - 66 && it.y < H - 14 && Math.abs(it.x + 14 - cx) < 44) {
       if (it.bad) { g2.l--; $('g2l').textContent = g2.l; say(pick(['Ай, моя печень!','Rot не помог.','Это было несвежее.'])); if (g2.l <= 0) { it.el.remove(); g2end(); return false; } }
       else { g2.s++; $('g2s').textContent = g2.s; }
       it.el.remove(); return false;
