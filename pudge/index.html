@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fresh Meat!</title>
+<meta name="theme-color" content="#0b0709">
+<style>
+:root{--bg:#0b0709;--blood:#a3151b;--blood2:#e0262d;--gold:#d6a84a;--gold2:#f3d98a;--rot:#6fa83a;--ink:#e8dcc4;--panel:#171012}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif}
+body{min-height:100vh;overflow-x:hidden;background:
+ radial-gradient(ellipse at 50% 0,#3a0b0e 0,transparent 60%),
+ radial-gradient(ellipse at 50% 100%,#1b2a0c 0,transparent 55%),var(--bg)}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,#000 130%);z-index:50}
+.fog{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.fog i{position:absolute;bottom:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(111,168,58,.28),transparent 70%);animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-110vh) scale(1.8);opacity:0}}
+main{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:28px 16px 80px;text-align:center}
+.tag{letter-spacing:.35em;font-size:12px;color:var(--gold);text-transform:uppercase}
+h1{margin:10px 0 4px;font-size:clamp(40px,11vw,84px);line-height:1;text-transform:uppercase;letter-spacing:.04em;
+ background:linear-gradient(#fff3c4,var(--gold) 55%,#7a5316);-webkit-background-clip:text;background-clip:text;color:transparent;
+ filter:drop-shadow(0 3px 0 #000) drop-shadow(0 0 18px rgba(224,38,45,.5))}
+.sub{color:var(--blood2);font-style:italic;font-size:18px;min-height:1.4em}
+.frame{border:2px solid var(--gold);background:linear-gradient(#1d1417,#0f0809);box-shadow:0 0 0 2px #000,0 0 30px rgba(163,21,27,.45),inset 0 0 40px #000;position:relative}
+.frame:before,.frame:after{content:"◆";position:absolute;top:-11px;color:var(--gold);font-size:16px;background:var(--bg);padding:0 4px}
+.frame:before{left:14px}.frame:after{right:14px}
+.stage{margin:22px auto;padding:10px 0 0;height:340px;overflow:hidden;cursor:pointer;user-select:none;touch-action:manipulation}
+#pudge{width:260px;height:300px;display:block;margin:0 auto;transition:transform .15s;animation:idle 2.4s ease-in-out infinite}
+@keyframes idle{50%{transform:translateY(-6px) rotate(-1.5deg)}}
+.stage.hit #pudge{animation:none;transform:scale(1.08) rotate(3deg)}
+#hookLine{stroke:#9b9b9b;stroke-width:3;stroke-dasharray:6 3}
+.hook{position:absolute;font-size:34px;pointer-events:none;animation:fly .7s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
+.hint{font-size:13px;color:#9c8f78;margin:0 0 10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+button{font:inherit;cursor:pointer;color:var(--gold2);padding:12px 20px;text-transform:uppercase;letter-spacing:.12em;font-size:14px;
+ background:linear-gradient(#5a1014,#2a0709);border:2px solid var(--gold);box-shadow:0 0 0 1px #000,inset 0 0 12px #000;transition:.15s}
+button:hover,button:active{filter:brightness(1.35);transform:translateY(-1px)}
+.panel{padding:22px 18px;margin:26px 0}
+.panel h2{margin:0 0 10px;color:var(--gold);text-transform:uppercase;letter-spacing:.2em;font-size:17px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{padding:12px;border:1px solid #4a3a1c;background:#0b0708}
+.stat b{display:block;font-size:26px;color:var(--gold2)}
+.stat span{font-size:12px;color:#9c8f78;text-transform:uppercase;letter-spacing:.1em}
+.skills{display:grid;gap:12px;text-align:left}
+.skill{display:flex;gap:14px;align-items:center;padding:12px;border:1px solid #4a3a1c;background:#0b0708}
+.skill .ic{flex:0 0 54px;height:54px;border:2px solid var(--gold);display:grid;place-items:center;font-size:28px;background:radial-gradient(#3a1014,#0b0405)}
+.skill h3{margin:0;font-size:16px;color:var(--gold2)}
+.skill p{margin:2px 0 0;font-size:14px;color:#b9ab91}
+.letter{text-align:left;font-size:17px;line-height:1.6}
+.letter p{margin:0 0 12px}
+.gift{padding:30px 18px;position:relative}
+.gift .chest{font-size:80px;cursor:pointer;display:inline-block;animation:idle 2s infinite}
+#gift-text{display:none;margin-top:10px}
+#gift-text.on{display:block;animation:pop .5s}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.rot{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0;transition:opacity .5s;background:radial-gradient(circle,rgba(111,168,58,.35),rgba(30,60,10,.6));mix-blend-mode:screen}
+.rot.on{opacity:1;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.6}}
+footer{margin-top:40px;color:#7c705c;font-size:13px}
+</style>
+</head>
+<body>
+<div class="fog" id="fog"></div>
+<div class="rot" id="rot"></div>
+<main>
+  <div class="tag">Сегодня на поле боя</div>
+  <h1 id="title">С днём рождения, <span id="name">друг</span>!</h1>
+  <div class="sub" id="sub">«Fresh meat!»</div>
+
+  <div class="frame stage" id="stage">
+    <svg id="pudge" viewBox="0 0 260 300" aria-label="Pudge">
+      <defs>
+        <radialGradient id="skin" cx="50%" cy="35%"><stop offset="0" stop-color="#9ac75a"/><stop offset="1" stop-color="#4e7a22"/></radialGradient>
+        <radialGradient id="belly" cx="50%" cy="40%"><stop offset="0" stop-color="#c7a96b"/><stop offset="1" stop-color="#7d6232"/></radialGradient>
+      </defs>
+      <ellipse cx="130" cy="285" rx="95" ry="12" fill="#000" opacity=".6"/>
+      <!-- legs -->
+      <rect x="82" y="225" width="38" height="52" rx="12" fill="#3a5c18"/><rect x="140" y="225" width="38" height="52" rx="12" fill="#3a5c18"/>
+      <rect x="76" y="268" width="50" height="14" rx="6" fill="#2a1a10"/><rect x="134" y="268" width="50" height="14" rx="6" fill="#2a1a10"/>
+      <!-- body -->
+      <ellipse cx="130" cy="180" rx="88" ry="78" fill="url(#skin)" stroke="#2c4a10" stroke-width="3"/>
+      <ellipse cx="130" cy="195" rx="62" ry="52" fill="url(#belly)" stroke="#4d3b1b" stroke-width="2"/>
+      <path d="M92 185h76M96 205h68M100 222h60" stroke="#5b4522" stroke-width="2" fill="none"/>
+      <path d="M70 150q60-30 120 0" stroke="#4a2a14" stroke-width="10" fill="none"/>
+      <!-- arms -->
+      <ellipse cx="48" cy="170" rx="22" ry="34" fill="url(#skin)" stroke="#2c4a10" stroke-width="3"/>
+      <ellipse cx="212" cy="170" rx="22" ry="34" fill="url(#skin)" stroke="#2c4a10" stroke-width="3"/>
+      <!-- cleaver -->
+      <g transform="rotate(-18 212 190)"><rect x="206" y="120" width="12" height="70" fill="#5a3b1e"/><path d="M190 60h46l-4 66h-38z" fill="#b9bcc2" stroke="#444" stroke-width="3"/><path d="M196 70l30 0" stroke="#fff" opacity=".6" stroke-width="3"/><path d="M193 118l5 8 5-8 5 8 5-8 5 8 5-8 5 8" stroke="#7a1a1a" stroke-width="3" fill="none"/></g>
+      <!-- head -->
+      <ellipse cx="130" cy="92" rx="48" ry="44" fill="url(#skin)" stroke="#2c4a10" stroke-width="3"/>
+      <path d="M92 70q38-38 76 0q-38-14-76 0z" fill="#2b2b2b"/>
+      <ellipse cx="112" cy="90" rx="9" ry="7" fill="#fff"/><ellipse cx="150" cy="90" rx="9" ry="7" fill="#fff"/>
+      <circle cx="114" cy="91" r="3.5" fill="#a00"/><circle cx="148" cy="91" r="3.5" fill="#a00"/>
+      <path d="M100 80l22 8M160 80l-22 8" stroke="#1d3309" stroke-width="4"/>
+      <path d="M104 112q26 20 52 0" stroke="#2a0d0d" stroke-width="3" fill="#3a0a0a"/>
+      <path d="M110 112l4 9 5-8 5 9 5-9 5 8 4-9" fill="#e8dcc4"/>
+      <!-- hook line -->
+      <line id="hookLine" x1="48" y1="170" x2="48" y2="170" opacity="0"/>
+    </svg>
+  </div>
+  <p class="hint">Тапай Пуджа — он кидает хук 🪝 · счёт хуков: <b id="hooks">0</b></p>
+  <div class="row">
+    <button id="rotBtn">☠ Включить гниль</button>
+    <button id="quoteBtn">🗣 Реплика</button>
+  </div>
+
+  <section class="frame panel">
+    <h2>Профиль героя</h2>
+    <div class="stats">
+      <div class="stat"><b id="age">??</b><span>уровень (лет)</span></div>
+      <div class="stat"><b>25</b><span>максимальный лвл</span></div>
+      <div class="stat"><b>∞</b><span>хуков в запасе</span></div>
+      <div class="stat"><b>0%</b><span>шанс промаха</span></div>
+    </div>
+  </section>
+
+  <section class="frame panel">
+    <h2>Способности</h2>
+    <div class="skills">
+      <div class="skill"><div class="ic">🪝</div><div><h3>Meat Hook</h3><p>Цепляет удачу с любой дистанции. В новом году промахов нет — только точные попадания.</p></div></div>
+      <div class="skill"><div class="ic">☣</div><div><h3>Rot</h3><p>Наносит урон всем, кто рядом. Тебе — только немного HP. Зато вокруг всегда есть повод посмеяться.</p></div></div>
+      <div class="skill"><div class="ic">🍖</div><div><h3>Flesh Heap</h3><p>С каждым годом крепче и сильнее. Стак опыта растёт, броня тоже.</p></div></div>
+      <div class="skill"><div class="ic">🔪</div><div><h3>Dismember</h3><p>Ультимейт: держит врагов и проблемы, пока ты спокойно их разбираешь.</p></div></div>
+    </div>
+  </section>
+
+  <section class="frame panel letter">
+    <h2 style="text-align:center">Послание от союзников</h2>
+    <p>Друг, с днём рождения! Ты тот, кто всегда заходит первым и вытаскивает остальных, как хуком из тумана.</p>
+    <p>Желаю, чтобы в этом году все хуки попадали, ауры не пропадали, а фонтан был рядом только когда нужно отдохнуть.</p>
+    <p>Пусть будут лёгкие катки, хороший пинг и никаких 5-стаков в соло. Здоровья, денег, настоящих друзей и побольше поводов собираться вместе.</p>
+    <p style="text-align:right;color:var(--gold)">— твоя команда ⚔</p>
+  </section>
+
+  <section class="frame panel gift">
+    <h2>Сундук с наградой</h2>
+    <div class="chest" id="chest">🎁</div>
+    <div id="gift-text">
+      <p style="font-size:20px;color:var(--gold2);margin:0">⚔ Получен: «Aegis of the Immortal» ⚔</p>
+      <p>Один бонусный респавн на весь год и подарок от нас — ждёт тебя лично.</p>
+    </div>
+  </section>
+
+  <footer>GG WP · Happy Birthday</footer>
+</main>
+
+<script>
+// ===== настройки =====
+const FRIEND = { name: "друг", age: null };  // имя и возраст (число) друга
+const QUOTES = ["Fresh meat!","Come here, I got a present for you!","Mmm, mouth-watering!","You are my favorite snack. Happy birthday!","Hook, line and... cake!","Dinner time! It's cake time!","One more year, one more hook.","Ready to rot? Let's party!"];
+// =====================
+const $ = id => document.getElementById(id);
+$('name').textContent = FRIEND.name;
+if (FRIEND.age) $('age').textContent = FRIEND.age;
+let q = 0;
+const say = t => { $('sub').textContent = '«' + t + '»'; };
+const nextQuote = () => say(QUOTES[q++ % QUOTES.length]);
+$('quoteBtn').onclick = nextQuote;
+
+// туман
+const fog = $('fog');
+for (let i = 0; i < 12; i++) {
+  const e = document.createElement('i');
+  e.style.left = Math.random()*100 + '%';
+  e.style.animationDuration = (10 + Math.random()*14) + 's';
+  e.style.animationDelay = (-Math.random()*20) + 's';
+  fog.appendChild(e);
+}
+
+// хуки
+let hooks = 0;
+const stage = $('stage');
+function throwHook(ev) {
+  const r = stage.getBoundingClientRect();
+  const x = (ev.clientX ?? r.left + r.width/2) - r.left;
+  const y = (ev.clientY ?? r.top + r.height/2) - r.top;
+  const h = document.createElement('div');
+  h.className = 'hook'; h.textContent = '🪝';
+  h.style.left = '50%'; h.style.top = '45%';
+  h.style.setProperty('--dx', (x - r.width/2) + 'px');
+  h.style.setProperty('--dy', (y - r.height*0.45) + 'px');
+  stage.appendChild(h); setTimeout(() => h.remove(), 700);
+  stage.classList.add('hit'); setTimeout(() => stage.classList.remove('hit'), 150);
+  $('hooks').textContent = ++hooks;
+  if (hooks % 5 === 0) nextQuote();
+  if (navigator.vibrate) navigator.vibrate(20);
+}
+stage.addEventListener('pointerdown', throwHook);
+
+// гниль
+let rotOn = false;
+$('rotBtn').onclick = () => {
+  rotOn = !rotOn;
+  $('rot').classList.toggle('on', rotOn);
+  $('rotBtn').textContent = rotOn ? '☠ Выключить гниль' : '☠ Включить гниль';
+  if (rotOn) say('Rot! Everyone is invited to the party!');
+};
+
+// сундук
+$('chest').onclick = () => {
+  $('chest').textContent = '👑';
+  $('gift-text').classList.add('on');
+  say('Dismember complete. Happy birthday!');
+};
+
+// имя из ссылки: ?name=Вася&age=25
+const p = new URLSearchParams(location.search);
+if (p.get('name')) $('name').textContent = p.get('name');
+if (p.get('age')) $('age').textContent = p.get('age');
+</script>
+</body>
+</html>
