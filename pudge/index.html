@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fresh Meat!</title>
+<meta name="theme-color" content="#0b0709">
+<style>
+:root{--bg:#0b0709;--blood:#a3151b;--blood2:#e0262d;--gold:#d6a84a;--gold2:#f3d98a;--rot:#6fa83a;--ink:#e8dcc4;--panel:#171012}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif}
+body{min-height:100vh;overflow-x:hidden;background:
+ radial-gradient(ellipse at 50% 0,#3a0b0e 0,transparent 60%),
+ radial-gradient(ellipse at 50% 100%,#1b2a0c 0,transparent 55%),var(--bg)}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,#000 130%);z-index:50}
+.fog{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.fog i{position:absolute;bottom:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(111,168,58,.28),transparent 70%);animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-110vh) scale(1.8);opacity:0}}
+main{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:28px 16px 80px;text-align:center}
+.tag{letter-spacing:.35em;font-size:12px;color:var(--gold);text-transform:uppercase}
+h1{margin:10px 0 4px;font-size:clamp(40px,11vw,84px);line-height:1;text-transform:uppercase;letter-spacing:.04em;
+ background:linear-gradient(#fff3c4,var(--gold) 55%,#7a5316);-webkit-background-clip:text;background-clip:text;color:transparent;
+ filter:drop-shadow(0 3px 0 #000) drop-shadow(0 0 18px rgba(224,38,45,.5))}
+.sub{color:var(--blood2);font-style:italic;font-size:18px;min-height:1.4em}
+.frame{border:2px solid var(--gold);background:linear-gradient(#1d1417,#0f0809);box-shadow:0 0 0 2px #000,0 0 30px rgba(163,21,27,.45),inset 0 0 40px #000;position:relative}
+.frame:before,.frame:after{content:"◆";position:absolute;top:-11px;color:var(--gold);font-size:16px;background:var(--bg);padding:0 4px}
+.frame:before{left:14px}.frame:after{right:14px}
+.stage{margin:22px auto;padding:10px 0 0;height:340px;overflow:hidden;cursor:pointer;user-select:none;touch-action:manipulation}
+#pudge{height:310px;width:auto;max-width:90%;display:block;margin:0 auto;filter:drop-shadow(0 8px 14px #000);pointer-events:none;transition:transform .15s;animation:idle 2.4s ease-in-out infinite}
+@keyframes idle{50%{transform:translateY(-6px) rotate(-1.5deg)}}
+.stage.hit #pudge{animation:none;transform:scale(1.08) rotate(3deg)}
+.hook{position:absolute;width:70px;pointer-events:none;animation:fly .7s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
+.hint{font-size:13px;color:#9c8f78;margin:0 0 10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+button{font:inherit;cursor:pointer;color:var(--gold2);padding:12px 20px;text-transform:uppercase;letter-spacing:.12em;font-size:14px;
+ background:linear-gradient(#5a1014,#2a0709);border:2px solid var(--gold);box-shadow:0 0 0 1px #000,inset 0 0 12px #000;transition:.15s}
+button:hover,button:active{filter:brightness(1.35);transform:translateY(-1px)}
+.panel{padding:22px 18px;margin:26px 0}
+.panel h2{margin:0 0 10px;color:var(--gold);text-transform:uppercase;letter-spacing:.2em;font-size:17px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{padding:12px;border:1px solid #4a3a1c;background:#0b0708}
+.stat b{display:block;font-size:26px;color:var(--gold2)}
+.stat span{font-size:12px;color:#9c8f78;text-transform:uppercase;letter-spacing:.1em}
+.skills{display:grid;gap:12px;text-align:left}
+.skill{display:flex;gap:14px;align-items:center;padding:12px;border:1px solid #4a3a1c;background:#0b0708}
+.skill .ic{flex:0 0 54px;height:54px;border:2px solid var(--gold);display:grid;place-items:center;font-size:28px;background:radial-gradient(#3a1014,#0b0405)}
+.skill h3{margin:0;font-size:16px;color:var(--gold2)}
+.skill p{margin:2px 0 0;font-size:14px;color:#b9ab91}
+.letter{text-align:left;font-size:17px;line-height:1.6}
+.letter p{margin:0 0 12px}
+.gift{padding:30px 18px;position:relative}
+.gift .chest{font-size:80px;cursor:pointer;display:inline-block;animation:idle 2s infinite}
+#gift-text{display:none;margin-top:10px}
+#gift-text.on{display:block;animation:pop .5s}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.rot{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0;transition:opacity .5s;background:radial-gradient(circle,rgba(111,168,58,.35),rgba(30,60,10,.6));mix-blend-mode:screen}
+.rot.on{opacity:1;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.6}}
+footer{margin-top:40px;color:#7c705c;font-size:13px}
+
+.game{padding:20px 14px}
+.game h2{margin-bottom:4px}
+.game .desc{font-size:14px;color:#b9ab91;margin:0 0 10px}
+.hud{display:flex;justify-content:space-between;font-size:14px;color:var(--gold2);margin-bottom:8px;letter-spacing:.08em}
+.arena{position:relative;height:300px;overflow:hidden;border:2px solid #4a3a1c;background:linear-gradient(#150d10,#0b0708 70%,#1b2a0c);touch-action:none;user-select:none}
+.tg{position:absolute;font-size:44px;line-height:1;cursor:pointer;white-space:nowrap}
+.tg small{display:block;font-size:10px;color:#cdbf9f;text-align:center;letter-spacing:.05em}
+.tg.ally small{color:#6fd36f}
+.pop{position:absolute;font-size:22px;font-weight:bold;pointer-events:none;animation:up .7s forwards}
+@keyframes up{to{transform:translateY(-40px);opacity:0}}
+.catcher{position:absolute;bottom:0;width:64px;transform:translateX(-50%);filter:drop-shadow(0 3px 4px #000)}
+.fall{position:absolute;font-size:30px;line-height:1}
+.overlay{position:absolute;inset:0;display:grid;place-items:center;background:rgba(5,2,3,.82);z-index:5;padding:14px}
+.overlay .box b{display:block;font-size:22px;color:var(--gold2);margin-bottom:6px}
+.overlay .box p{margin:4px 0 12px;font-size:14px;color:#cdbf9f}
+.q{text-align:left}
+.q h3{margin:0 0 10px;font-size:17px;color:var(--gold2)}
+.q button{display:block;width:100%;text-align:left;margin:8px 0;text-transform:none;letter-spacing:0;font-size:15px;padding:11px 14px}
+.q button.ok{background:linear-gradient(#245c16,#0f2a09)}
+.q button.bad{background:linear-gradient(#7a1015,#2a0709)}
+.rank{font-size:26px;color:var(--gold2);margin:6px 0}
+.deco{display:block;margin:0 auto 12px;max-width:80%;filter:drop-shadow(0 6px 12px #000)}
+.rune{font-size:64px;display:inline-block;animation:idle 2s infinite}
+#runeText{min-height:60px;font-size:17px;margin:10px 0;color:var(--gold2)}
+</style>
+</head>
+<body>
+<div class="fog" id="fog"></div>
+<div class="rot" id="rot"></div>
+<main>
+  <div class="tag">Сегодня на поле боя</div>
+  <h1 id="title">С днём рождения, <span id="name">друг</span>!</h1>
+  <div class="sub" id="sub">«Fresh meat!»</div>
+
+  <div class="frame stage" id="stage">
+    <img id="pudge" src="img/pudge-hat.webp" alt="Pudge" draggable="false">
+  </div>
+  <p class="hint">Тапай Пуджа — он кидает хук 🪝 · счёт хуков: <b id="hooks">0</b></p>
+  <div class="row">
+    <button id="rotBtn">☠ Включить гниль</button>
+    <button id="quoteBtn">🗣 Реплика</button>
+  </div>
+
+  <section class="frame panel">
+    <h2>Профиль героя</h2>
+    <img class="deco" src="img/pudge-front.webp" alt="" style="height:170px;width:auto">
+    <div class="stats">
+      <div class="stat"><b id="age">??</b><span>уровень (лет)</span></div>
+      <div class="stat"><b>25</b><span>максимальный лвл</span></div>
+      <div class="stat"><b>∞</b><span>хуков в запасе</span></div>
+      <div class="stat"><b>0%</b><span>шанс промаха</span></div>
+    </div>
+  </section>
+
+  <section class="frame panel">
+    <h2>Способности</h2>
+    <img class="deco" src="img/pudge-immortal.webp" alt="" style="height:200px;width:auto">
+    <div class="skills">
+      <div class="skill"><div class="ic">🪝</div><div><h3>Meat Hook</h3><p>Цепляет удачу с любой дистанции. В новом году промахов нет — только точные попадания.</p></div></div>
+      <div class="skill"><div class="ic">☣</div><div><h3>Rot</h3><p>Наносит урон всем, кто рядом. Тебе — только немного HP. Зато вокруг всегда есть повод посмеяться.</p></div></div>
+      <div class="skill"><div class="ic">🍖</div><div><h3>Flesh Heap</h3><p>С каждым годом крепче и сильнее. Стак опыта растёт, броня тоже.</p></div></div>
+      <div class="skill"><div class="ic">🔪</div><div><h3>Dismember</h3><p>Ультимейт: держит врагов и проблемы, пока ты спокойно их разбираешь.</p></div></div>
+    </div>
+  </section>
+
+  <section class="frame panel letter">
+    <h2 style="text-align:center">Послание от союзников</h2>
+    <p><b><span class="nm">Друг</span>, с днём рождения!</b> Тебе стукнул ещё один уровень, а это значит +2 к силе, +1.5 к ловкости и +0 к умению вовремя уйти с мидлайна.</p>
+    <p>Желаю, чтобы каждый хук в этом году летел точно в цель, даже сквозь туман, деревья и чужие иллюзии. Чтобы вражеский Рубик никогда не воровал твои заклинания, а Пак всегда улетал в фонтан, а не в твою зону.</p>
+    <p>Пусть в жизни не будет синего экрана вместо финального боя, дисконнекта на 40-й минуте и союзника, который «просто тестил». Пусть Рошан падает с первой попытки, а Аегис всегда достаётся тебе.</p>
+    <p>Пусть золото лежит не на буткемпе, а в кармане, ММР растёт, пинг падает, а настоящие друзья держатся рядом, как хорошо стакнутые Flesh Heap.</p>
+    <p>И запомни: ты не просто «толстяк с тесаком», ты тот, кого противник боится увидеть за спиной. Так держать, <span class="nm">друг</span>! Сегодня торт, завтра рапира.</p>
+    <p style="text-align:right;color:var(--gold)">— твоя команда ⚔ GG WP</p>
+  </section>
+
+    <section class="frame panel game">
+    <h2>Игра 1 · Meat Hook</h2>
+    <img class="deco" src="img/pudge-hook.webp" alt="" style="height:90px;width:auto">
+    <p class="desc">Хукни вражеских героев за 20 секунд. Союзников не трогай: −3 очка и «Вы поймали своего».</p>
+    <div class="hud"><span>Очки: <b id="g1s">0</b></span><span>Время: <b id="g1t">20</b></span><span>Рекорд: <b id="g1b">0</b></span></div>
+    <div class="arena" id="a1"><div class="overlay" id="o1"><div class="box"><b>Ready?</b><p>Тапай по героям, чтобы хукнуть.</p><button id="s1">Старт</button></div></div></div>
+  </section>
+
+  <section class="frame panel game">
+    <h2>Игра 2 · Flesh Heap</h2>
+    <p class="desc">Двигай Пуджа пальцем или мышью. Лови торты и крипов, а от Бомб Tinker и грибов уворачивайся. 30 секунд, 3 жизни.</p>
+    <div class="hud"><span>Очки: <b id="g2s">0</b></span><span>Жизни: <b id="g2l">3</b></span><span>Рекорд: <b id="g2b">0</b></span></div>
+    <div class="arena" id="a2"><img class="catcher" id="cat" src="img/pudge-butcher.webp" alt="Pudge" draggable="false"><div class="overlay" id="o2"><div class="box"><b>Dinner time!</b><p>Пудж голоден. Накорми его.</p><button id="s2">Старт</button></div></div></div>
+  </section>
+
+  <section class="frame panel game q" id="quiz">
+    <h2 style="text-align:center">Игра 3 · Ранг по Доте</h2>
+    <div id="qbox"></div>
+  </section>
+
+  <section class="frame panel game" style="text-align:center">
+    <h2>Руна пожеланий</h2>
+    <p class="desc">Подбери руну и получи пожелание на год.</p>
+    <div class="rune" id="rune">🔮</div>
+    <div id="runeText">Тапни руну</div>
+    <button id="runeBtn">Взять руну</button>
+  </section>
+
+  <section class="frame panel gift">
+    <h2>Сундук с наградой</h2>
+    <div class="chest" id="chest">🎁</div>
+    <div id="gift-text">
+      <p style="font-size:20px;color:var(--gold2);margin:0">⚔ Получен: «Aegis of the Immortal» ⚔</p>
+      <p>Один бонусный респавн на весь год и подарок от нас — ждёт тебя лично.</p>
+    </div>
+  </section>
+
+  <footer>GG WP · Happy Birthday</footer>
+</main>
+
+<script>
+// ===== настройки =====
+const FRIEND = { name: "друг", age: null };  // имя и возраст (число) друга
+const QUOTES = ["Fresh meat!","Come here, I got a present for you!","Mmm, mouth-watering!","You are my favorite snack. Happy birthday!","Hook, line and... cake!","Dinner time! It's cake time!","One more year, one more hook.","Ready to rot? Let's party!"];
+// =====================
+const $ = id => document.getElementById(id);
+const setName = n => { $('name').textContent = n; document.querySelectorAll('.nm').forEach(e => e.textContent = n); };
+setName(FRIEND.name);
+if (FRIEND.age) $('age').textContent = FRIEND.age;
+let q = 0;
+const say = t => { $('sub').textContent = '«' + t + '»'; };
+const nextQuote = () => say(QUOTES[q++ % QUOTES.length]);
+$('quoteBtn').onclick = nextQuote;
+
+// туман
+const fog = $('fog');
+for (let i = 0; i < 12; i++) {
+  const e = document.createElement('i');
+  e.style.left = Math.random()*100 + '%';
+  e.style.animationDuration = (10 + Math.random()*14) + 's';
+  e.style.animationDelay = (-Math.random()*20) + 's';
+  fog.appendChild(e);
+}
+
+// хуки
+let hooks = 0;
+const stage = $('stage');
+function throwHook(ev) {
+  const r = stage.getBoundingClientRect();
+  const x = (ev.clientX ?? r.left + r.width/2) - r.left;
+  const y = (ev.clientY ?? r.top + r.height/2) - r.top;
+  const h = document.createElement('div');
+  h.className = 'hook'; h.innerHTML = '<img src="img/pudge-hook.webp" width="70" alt="">';
+  h.style.left = '50%'; h.style.top = '45%';
+  h.style.setProperty('--dx', (x - r.width/2) + 'px');
+  h.style.setProperty('--dy', (y - r.height*0.45) + 'px');
+  stage.appendChild(h); setTimeout(() => h.remove(), 700);
+  stage.classList.add('hit'); setTimeout(() => stage.classList.remove('hit'), 150);
+  $('hooks').textContent = ++hooks;
+  if (hooks % 5 === 0) nextQuote();
+  if (navigator.vibrate) navigator.vibrate(20);
+}
+stage.addEventListener('pointerdown', throwHook);
+
+// гниль
+let rotOn = false;
+$('rotBtn').onclick = () => {
+  rotOn = !rotOn;
+  $('rot').classList.toggle('on', rotOn);
+  $('rotBtn').textContent = rotOn ? '☠ Выключить гниль' : '☠ Включить гниль';
+  if (rotOn) say('Rot! Everyone is invited to the party!');
+};
+
+// сундук
+$('chest').onclick = () => {
+  $('chest').textContent = '👑';
+  $('gift-text').classList.add('on');
+  say('Dismember complete. Happy birthday!');
+};
+
+
+// ===== общие хелперы =====
+const rnd = (a, b) => a + Math.random() * (b - a);
+const pick = a => a[Math.floor(Math.random() * a.length)];
+function best(key, val) {
+  let b = 0; try { b = +localStorage.getItem(key) || 0; } catch (e) {}
+  if (val > b) { b = val; try { localStorage.setItem(key, b); } catch (e) {} }
+  return b;
+}
+function over(el, title, txt, btnId, btnText, onClick) {
+  el.innerHTML = '<div class="box"><b>' + title + '</b><p>' + txt + '</p><button id="' + btnId + '">' + btnText + '</button></div>';
+  el.style.display = 'grid';
+  $(btnId).onclick = onClick;
+}
+
+// ===== Игра 1: Meat Hook =====
+const ENEMIES = [['🧙','Invoker'],['🏹','Drow'],['🧛','Night Stalker'],['🐻','Ursa'],['🐉','Dragon Knight'],['🧝','Phantom Assassin'],['🦂','Sand King'],['👻','Spectre'],['💀','Wraith King']];
+const ALLIES = [['🤡','Союзник-нуб'],['🙈','Фидер']];
+const a1 = $('a1'); let g1 = {on:false, s:0, t:20, tm:0, sp:0};
+$('g1b').textContent = best('g1', 0);
+function g1spawn() {
+  if (!g1.on) return;
+  const ally = Math.random() < .22;
+  const [ic, nm] = pick(ally ? ALLIES : ENEMIES);
+  const el = document.createElement('div');
+  el.className = 'tg' + (ally ? ' ally' : '');
+  el.innerHTML = ic + '<small>' + nm + '</small>';
+  const w = a1.clientWidth, fromL = Math.random() < .5, dur = rnd(1800, 3200);
+  el.style.top = rnd(10, 230) + 'px';
+  el.style.left = (fromL ? -90 : w + 10) + 'px';
+  el.style.transition = 'left ' + dur + 'ms linear';
+  a1.appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.style.left = (fromL ? w + 10 : -90) + 'px'));
+  el.onpointerdown = e => {
+    e.stopPropagation();
+    if (el.dead || !g1.on) return; el.dead = 1;
+    const d = ally ? -3 : 1; g1.s = Math.max(0, g1.s + d); $('g1s').textContent = g1.s;
+    const r = el.getBoundingClientRect(), ar = a1.getBoundingClientRect();
+    const p = document.createElement('div'); p.className = 'pop';
+    p.style.left = (r.left - ar.left + 10) + 'px'; p.style.top = (r.top - ar.top) + 'px';
+    p.style.color = ally ? '#e0262d' : '#6fd36f'; p.textContent = ally ? '−3 🤦' : '+1 🪝';
+    a1.appendChild(p); setTimeout(() => p.remove(), 700);
+    if (ally) say('Вы поймали своего!'); el.remove();
+  };
+  setTimeout(() => el.remove(), dur + 100);
+  g1.sp = setTimeout(g1spawn, rnd(250, 600));
+}
+function g1start() {
+  $('o1').style.display = 'none';
+  a1.querySelectorAll('.tg').forEach(x => x.remove());
+  g1 = {on:true, s:0, t:20, tm:0, sp:0};
+  $('g1s').textContent = 0; $('g1t').textContent = 20;
+  g1spawn();
+  g1.tm = setInterval(() => {
+    $('g1t').textContent = --g1.t;
+    if (g1.t <= 0) {
+      g1.on = false; clearInterval(g1.tm); clearTimeout(g1.sp);
+      const b = best('g1', g1.s); $('g1b').textContent = b;
+      const m = g1.s >= 20 ? 'Легенда хука! Рошан в шоке.' : g1.s >= 10 ? 'Неплохо, но Пудж в Imm стримит лучше.' : 'Хуки мимо. Купи Aghanim.';
+      over($('o1'), 'GG! Очки: ' + g1.s, m, 's1', 'Ещё раз', g1start);
+    }
+  }, 1000);
+}
+$('s1').onclick = g1start;
+
+// ===== Игра 2: Flesh Heap =====
+const a2 = $('a2'), cat = $('cat'); let g2 = {on:false};
+$('g2b').textContent = best('g2', 0);
+cat.style.left = '50%';
+a2.addEventListener('pointermove', e => {
+  const r = a2.getBoundingClientRect();
+  cat.style.left = Math.min(r.width - 30, Math.max(30, e.clientX - r.left)) + 'px';
+});
+const GOOD = ['🎂','🍖','🍰','🍗','🧀'], BAD = ['💣','🍄','☠️'];
+function g2start() {
+  $('o2').style.display = 'none';
+  a2.querySelectorAll('.fall').forEach(x => x.remove());
+  g2 = {on:true, s:0, l:3, t:30, items:[], last:performance.now(), spawn:0};
+  $('g2s').textContent = 0; $('g2l').textContent = 3;
+  const tm = setInterval(() => { if (--g2.t <= 0) { clearInterval(tm); g2end(); } }, 1000);
+  g2.tm = tm; requestAnimationFrame(g2loop);
+}
+function g2end() {
+  g2.on = false; clearInterval(g2.tm);
+  g2.items.forEach(i => i.el.remove());
+  const b = best('g2', g2.s); $('g2b').textContent = b;
+  const m = g2.s >= 25 ? 'Flesh Heap на максимуме. Пудж сыт и доволен.' : g2.s >= 12 ? 'Нормально покушал.' : 'Пудж остался голодным.';
+  over($('o2'), 'Очки: ' + g2.s, m, 's2', 'Ещё раз', g2start);
+}
+function g2loop(t) {
+  if (!g2.on) return;
+  const dt = (t - g2.last) / 1000; g2.last = t;
+  g2.spawn -= dt;
+  if (g2.spawn <= 0) {
+    g2.spawn = rnd(.35, .7);
+    const bad = Math.random() < .3;
+    const el = document.createElement('div'); el.className = 'fall';
+    el.textContent = pick(bad ? BAD : GOOD);
+    const x = rnd(20, a2.clientWidth - 40); el.style.left = x + 'px'; el.style.top = '-30px';
+    a2.appendChild(el); g2.items.push({el, x, y:-30, bad, v:rnd(110, 200)});
+  }
+  const cx = parseFloat(cat.style.left), H = a2.clientHeight;
+  g2.items = g2.items.filter(it => {
+    it.y += it.v * dt; it.el.style.top = it.y + 'px';
+    if (it.y > H - 66 && it.y < H - 14 && Math.abs(it.x + 14 - cx) < 44) {
+      if (it.bad) { g2.l--; $('g2l').textContent = g2.l; say(pick(['Ай, моя печень!','Rot не помог.','Это было несвежее.'])); if (g2.l <= 0) { it.el.remove(); g2end(); return false; } }
+      else { g2.s++; $('g2s').textContent = g2.s; }
+      it.el.remove(); return false;
+    }
+    if (it.y > H) { it.el.remove(); return false; }
+    return true;
+  });
+  if (g2.on) requestAnimationFrame(g2loop);
+}
+$('s2').onclick = g2start;
+
+// ===== Игра 3: квиз =====
+const QS = [
+ ['Какая у Пуджа главная способность?', ['Meat Hook','Fireball','Rapier','Blink и Ctrl+A'], 0],
+ ['Что кричит Пудж, когда ловит цель?', ['«Fresh meat!»','«Ура, ничья»','«Подожди, афк»','«Где мой буткемп?»'], 0],
+ ['Сколько лет Рошану на самом деле?', ['Рошан вечен','Ровно 18','Он младше Пуджа','Рошана не существует, это Пак'], 0],
+ ['Что делает хороший саппорт на 5-й позиции?', ['Покупает вард и умирает за кор','Фармит лес','Идёт мидом','Просит на ленинградку'], 0],
+ ['Как правильно отметить ДР в Доте?', ['Хук, рот, торт, респавн','Тайм-аут и фонтан','Скипнуть и афкнуть','Купить Рошана'], 0]
+];
+const RANKS = ['Herald','Guardian','Crusader','Archon','Legend','Ancient','Divine','Immortal'];
+let qi = 0, qs = 0;
+function quiz() {
+  const box = $('qbox');
+  if (qi >= QS.length) {
+    const r = Math.min(RANKS.length - 1, Math.round(qs / QS.length * (RANKS.length - 1)));
+    box.innerHTML = '<div style="text-align:center"><div>Твой итог: ' + qs + ' из ' + QS.length + '</div><div class="rank">🏆 ' + RANKS[r] + '</div><p>' + (qs === 5 ? 'Пудж-мейн подтверждён.' : 'Нужно больше хуков.') + '</p><button id="qre">Заново</button></div>';
+    $('qre').onclick = () => { qi = 0; qs = 0; quiz(); }; return;
+  }
+  const [t, opts, ok] = QS[qi];
+  const order = opts.map((o, i) => [o, i]).sort(() => Math.random() - .5);
+  box.innerHTML = '<h3>' + (qi + 1) + '/' + QS.length + ' · ' + t + '</h3>';
+  order.forEach(([o, i]) => {
+    const b = document.createElement('button'); b.textContent = o;
+    b.onclick = () => {
+      box.querySelectorAll('button').forEach(x => x.disabled = true);
+      if (i === ok) { b.classList.add('ok'); qs++; } else b.classList.add('bad');
+      setTimeout(() => { qi++; quiz(); }, 700);
+    };
+    box.appendChild(b);
+  });
+}
+quiz();
+
+// ===== Руна =====
+const RUNES = [
+ ['⚡','Руна Хасты: пусть всё получается быстро и с первого раза.'],
+ ['💥','Руна Двойного урона: ×2 к успеху на работе и в делах.'],
+ ['🫥','Руна Невидимости: пусть проблемы тебя в упор не видят.'],
+ ['💚','Руна Регенерации: здоровье и бодрость на весь год.'],
+ ['🪞','Руна Иллюзий: тебя будет в два раза больше там, где весело.'],
+ ['💰','Руна Баунти: денег, как после удачного ганка.'],
+ ['🔮','Руна Арканы: скиллы без кулдауна, мана на максимум.'],
+ ['🛡','Руна Аегис: один бесплатный респавн, когда всё пойдёт не так.']
+];
+$('runeBtn').onclick = $('rune').onclick = () => {
+  const [ic, t] = pick(RUNES);
+  $('rune').textContent = ic; $('runeText').textContent = t;
+};
+
+// имя из ссылки: ?name=Вася&age=25
+const p = new URLSearchParams(location.search);
+if (p.get('name')) setName(p.get('name'));
+if (p.get('age')) $('age').textContent = p.get('age');
+</script>
+</body>
+</html>
